@@ -55,14 +55,19 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Error contactando con Telegram', detail: String(err) });
   }
 
-  // 2) Email de confirmación al cliente (best-effort, no bloquea)
+  // 2) Email de confirmación al cliente (await + try/catch para no bloquear si falla)
+  let emailStatus = 'skipped';
   if (resendKey && email) {
-    sendClientEmail({ resendKey, to: email, nombre }).catch(err => {
-      console.error('Resend error (no bloquea respuesta):', err);
-    });
+    try {
+      await sendClientEmail({ resendKey, to: email, nombre });
+      emailStatus = 'sent';
+    } catch (err) {
+      emailStatus = `failed: ${String(err).slice(0, 200)}`;
+      console.error('Resend error:', err);
+    }
   }
 
-  return res.status(200).json({ ok: true });
+  return res.status(200).json({ ok: true, email: emailStatus });
 }
 
 async function sendClientEmail({ resendKey, to, nombre }) {
