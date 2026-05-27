@@ -819,18 +819,18 @@ textarea.form-input { resize: vertical; min-height: 110px; }
       <p>Cubrimos la ciudad y el área metropolitana. Si tienes una urgencia, llegamos.</p>
     </div>
     <div class="zones-grid reveal">
-      <span class="zone-tag"><i class="fas fa-map-pin"></i> Ruzafa</span>
+      <a href="barrios/desatascos-ruzafa-valencia.html" class="zone-tag"><i class="fas fa-map-pin"></i> Ruzafa</a>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> El Carmen</span>
-      <span class="zone-tag"><i class="fas fa-map-pin"></i> Benimaclet</span>
-      <span class="zone-tag"><i class="fas fa-map-pin"></i> Patraix</span>
-      <span class="zone-tag"><i class="fas fa-map-pin"></i> Campanar</span>
-      <span class="zone-tag"><i class="fas fa-map-pin"></i> Jesús</span>
+      <a href="barrios/desatascos-benimaclet-valencia.html" class="zone-tag"><i class="fas fa-map-pin"></i> Benimaclet</a>
+      <a href="barrios/desatascos-patraix-valencia.html" class="zone-tag"><i class="fas fa-map-pin"></i> Patraix</a>
+      <a href="barrios/desatascos-campanar-valencia.html" class="zone-tag"><i class="fas fa-map-pin"></i> Campanar</a>
+      <a href="barrios/desatascos-jesus-valencia.html" class="zone-tag"><i class="fas fa-map-pin"></i> Jesús</a>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> Algirós</span>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> La Malvarrosa</span>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> Quatre Carreres</span>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> La Saïdia</span>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> Extramurs</span>
-      <span class="zone-tag"><i class="fas fa-map-pin"></i> Cabanyal</span>
+      <a href="barrios/desatascos-cabanyal-valencia.html" class="zone-tag"><i class="fas fa-map-pin"></i> Cabanyal</a>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> Marítim</span>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> Mestalla</span>
       <span class="zone-tag"><i class="fas fa-map-pin"></i> Torrefiel</span>
@@ -944,14 +944,16 @@ textarea.form-input { resize: vertical; min-height: 110px; }
       <p>Llámanos o déjanos tu número y te llamamos en menos de 5 minutos</p>
     </div>
     <div class="contact-wrap reveal">
-      <form class="contact-form" onsubmit="return false;">
+      <form class="contact-form" id="contactForm">
         <h3>¿Hablamos?</h3>
         <div class="form-hint">Te devolvemos la llamada hoy mismo sin compromiso.</div>
-        <input type="text" class="form-input" placeholder="Tu nombre" required>
-        <input type="tel" class="form-input" placeholder="Tu teléfono" required>
-        <input type="email" class="form-input" placeholder="Tu email (opcional)">
-        <textarea class="form-input" placeholder="Cuéntanos qué necesitas..."></textarea>
-        <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
+        <input type="text" name="nombre" class="form-input" placeholder="Tu nombre" required>
+        <input type="tel" name="telefono" class="form-input" placeholder="Tu teléfono" required>
+        <input type="email" name="email" class="form-input" placeholder="Tu email (opcional)">
+        <textarea name="mensaje" class="form-input" placeholder="Cuéntanos qué necesitas..."></textarea>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+        <button type="submit" class="btn-submit" id="contactSubmit"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
+        <div id="contactStatus" style="font-size:13px;margin-top:8px;display:none;"></div>
       </form>
       <div class="contact-info">
         <h3>Contacto directo</h3>
@@ -1129,6 +1131,45 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // Navbar scroll
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// Formulario → Telegram via /api/contact
+document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('contactSubmit');
+  const status = document.getElementById('contactStatus');
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+  status.style.display = 'none';
+
+  const data = Object.fromEntries(new FormData(form).entries());
+  data.origen = location.href;
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.ok) {
+      form.reset();
+      status.style.display = 'block';
+      status.style.color = '#16a34a';
+      status.innerHTML = '✓ Mensaje enviado. Te llamamos en menos de 5 minutos.';
+      btn.innerHTML = '<i class="fas fa-check"></i> Enviado';
+    } else {
+      throw new Error(json.error || 'Error desconocido');
+    }
+  } catch (err) {
+    status.style.display = 'block';
+    status.style.color = '#dc2626';
+    status.innerHTML = '✗ Error al enviar. Llámanos directamente: +34 677 123 123';
+    btn.disabled = false;
+    btn.innerHTML = original;
+  }
 });
 
 // Mobile menu
