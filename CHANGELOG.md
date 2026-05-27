@@ -5,6 +5,16 @@ Fecha en formato `YYYY-MM-DD`.
 
 ---
 
+## [0.3.1] — 2026-05-27
+
+### Corregido
+- Bug crítico en `api/contact.js`: el envío de email via Resend estaba implementado como fire-and-forget (sin `await`), pero **Vercel mata el proceso de la función al devolver la respuesta HTTP**, por lo que la promesa de Resend nunca se completaba y el email nunca llegaba al cliente.
+- Solución: `await sendClientEmail(...)` dentro de try/catch — si Resend falla no bloquea la respuesta, pero ahora se ejecuta hasta el final.
+- Añadido campo `email: "sent" | "failed: ..." | "skipped"` en la respuesta JSON para debugging.
+
+### Lección aprendida
+- En serverless functions (Vercel/AWS Lambda) **NO usar fire-and-forget** para tareas que deben completar — el runtime puede pausar/matar la función al devolver. Siempre `await`. Si se quiere paralelismo, usar `Promise.all` y luego await.
+
 ## [0.4.0] — 2026-05-27
 
 ### Añadido
