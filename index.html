@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="assets/megamenu.css">
 <script>
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 function __pllTop(){ try{ window.scrollTo({top:0,left:0,behavior:'instant'}); }catch(e){ window.scrollTo(0,0); } document.documentElement.scrollTop=0; document.body && (document.body.scrollTop=0); }
@@ -529,10 +530,11 @@ textarea.form-input { resize: vertical; min-height: 110px; }
       <img src="assets/logo-lajenuco.png" alt="Desatascos urgentes en Valencia" class="navbar-logo">
     </a>
     <ul class="navbar-links">
-      <li><a href="#servicios">Servicios</a></li>
-      <li><a href="#nosotros">Nosotros</a></li>
-      <li><a href="#zonas">Zonas</a></li>
+      <li class="has-mega" data-mega="servicios"><a href="#servicios">Servicios <i class="fas fa-chevron-down mega-caret"></i></a></li>
+      <li class="has-mega" data-mega="zonas"><a href="#zonas">Zonas <i class="fas fa-chevron-down mega-caret"></i></a></li>
+      <li><a href="#proceso">Cómo trabajamos</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="blog/">Blog</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
     <a href="tel:+34677123123" class="navbar-cta">
@@ -541,6 +543,54 @@ textarea.form-input { resize: vertical; min-height: 110px; }
     <button class="navbar-menu-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('mobile-open')" aria-label="Menu">
       <i class="fas fa-bars"></i>
     </button>
+  </div>
+
+  <!-- MEGA: Servicios -->
+  <div class="mega" id="mega-servicios" role="region" aria-label="Servicios">
+    <div class="mega-inner">
+      <div class="mega-main">
+        <span class="mega-col-head">Servicios de desatasco en Valencia</span>
+        <div class="mega-services">
+          <a class="mega-link" href="servicios/desatasco-tuberias-valencia.html"><span class="mega-ico"><i class="fas fa-bolt"></i></span><span><h4>Desatasco de tuberías</h4><p>Alta presión, cualquier diámetro</p></span></a>
+          <a class="mega-link" href="servicios/desatasco-wc-valencia.html"><span class="mega-ico"><i class="fas fa-toilet"></i></span><span><h4>Desatasco de WC</h4><p>Sin obras, en minutos</p></span></a>
+          <a class="mega-link" href="servicios/desatasco-fregadero-valencia.html"><span class="mega-ico"><i class="fas fa-sink"></i></span><span><h4>Fregadero y ducha</h4><p>Sifones y bajantes a fondo</p></span></a>
+          <a class="mega-link" href="servicios/desatasco-canalones-valencia.html"><span class="mega-ico"><i class="fas fa-cloud-rain"></i></span><span><h4>Canalones y bajantes</h4><p>Antes de las lluvias</p></span></a>
+          <a class="mega-link" href="servicios/inspeccion-camara-tuberias-valencia.html"><span class="mega-ico"><i class="fas fa-camera"></i></span><span><h4>Inspección con cámara</h4><p>Diagnóstico exacto, sin obras</p></span></a>
+          <a class="mega-link" href="servicios/limpieza-fosa-septica-valencia.html"><span class="mega-ico"><i class="fas fa-truck"></i></span><span><h4>Fosa séptica</h4><p>Comunidades y empresas</p></span></a>
+        </div>
+      </div>
+      <aside class="mega-promo">
+        <h4>¿Es urgente ahora?</h4>
+        <p>Técnico en tu puerta en ~30 min. 24h, todos los días.</p>
+        <a class="mega-phone" href="tel:+34677123123"><i class="fas fa-phone"></i> +34 677 123 123</a>
+      </aside>
+    </div>
+  </div>
+
+  <!-- MEGA: Zonas -->
+  <div class="mega" id="mega-zonas" role="region" aria-label="Zonas">
+    <div class="mega-inner">
+      <div class="mega-main">
+        <span class="mega-col-head">Barrios de Valencia</span>
+        <div class="mega-services">
+          <a class="mega-link" href="barrios/desatascos-ruzafa-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Ruzafa</h4><p>Russafa y entorno del mercado</p></span></a>
+          <a class="mega-link" href="barrios/desatascos-benimaclet-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Benimaclet</h4><p>Zona universitaria</p></span></a>
+          <a class="mega-link" href="barrios/desatascos-campanar-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Campanar</h4><p>Hospital La Fe y alrededores</p></span></a>
+          <a class="mega-link" href="barrios/desatascos-patraix-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Patraix</h4><p>Safranar y Vara de Quart</p></span></a>
+          <a class="mega-link" href="barrios/desatascos-cabanyal-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>El Cabanyal</h4><p>Marítimo y La Malvarrosa</p></span></a>
+          <a class="mega-link" href="barrios/desatascos-jesus-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Jesús</h4><p>Morvedre y Mercat de Jesús</p></span></a>
+        </div>
+        <span class="mega-col-head" style="margin-top:16px;">También cubrimos</span>
+        <div class="mega-zonas-extra" style="margin-top:8px;">
+          <span class="mega-zona-pill">Mislata</span><span class="mega-zona-pill">Torrent</span><span class="mega-zona-pill">Burjassot</span><span class="mega-zona-pill">Paterna</span><span class="mega-zona-pill">Alboraya</span><span class="mega-zona-pill">Quart de Poblet</span><span class="mega-zona-pill">Manises</span><span class="mega-zona-pill">Sedaví</span><span class="mega-zona-pill">Algirós</span><span class="mega-zona-pill">Extramurs</span>
+        </div>
+      </div>
+      <aside class="mega-promo">
+        <h4>¿No ves tu zona?</h4>
+        <p>Cubrimos toda Valencia y el área metropolitana. Llámanos y lo confirmamos.</p>
+        <a class="mega-phone" href="tel:+34677123123"><i class="fas fa-phone"></i> +34 677 123 123</a>
+      </aside>
+    </div>
   </div>
 </nav>
 
@@ -1233,6 +1283,7 @@ textarea.form-input { resize: vertical; min-height: 110px; }
 
 <script src="assets/eta-clima.js" defer></script>
 <script src="assets/chat-widget.js" defer></script>
+<script src="assets/megamenu.js" defer></script>
 
 <!-- Minimal JS: scroll reveal + navbar scroll -->
 <script>
