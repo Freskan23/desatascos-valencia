@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap");
-    :root{--brand:#ffc13b;--brand-light:#ffe963;--btn-text:#874900;--accent:#22c55e;--accent-glow:rgba(34,197,94,0.4);--ink:#0f172a;--ink-light:#334155;--ink-muted:#64748b;--surface:#fff;--surface-alt:#f8fafc;--surface-dark:#0f172a;--border:#e2e8f0;--radius:14px;--radius-sm:8px;--radius-full:9999px;--shadow-lg:0 12px 40px rgba(0,0,0,.10);--font:'Montserrat',-apple-system,sans-serif;--transition:.25s cubic-bezier(.4,0,.2,1);}
+    :root{--brand:#1e6fc8;--brand-light:#4a93de;--btn-text:#ffffff;--accent:#22b14c;--accent-glow:rgba(34,177,76,0.4);--urgency:#dc2626;--urgency-light:#ef4444;--urgency-glow:rgba(220,38,38,0.4);--ink:#0f172a;--ink-light:#334155;--ink-muted:#64748b;--surface:#fff;--surface-alt:#f8fafc;--surface-dark:#0f172a;--border:#e2e8f0;--radius:14px;--radius-sm:8px;--radius-full:9999px;--shadow-lg:0 12px 40px rgba(0,0,0,.10);--font:'Montserrat',-apple-system,sans-serif;--transition:.25s cubic-bezier(.4,0,.2,1);}
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     html{scroll-behavior:smooth;scroll-padding-top:80px;}
     body{font-family:var(--font);color:var(--ink-light);line-height:1.6;background:var(--surface);-webkit-font-smoothing:antialiased;}
@@ -19,12 +19,12 @@
     .navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
     .navbar.scrolled{box-shadow:0 1px 12px rgba(0,0,0,.06);}
     .navbar-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px;}
-    .navbar-brand img{height:56px;width:auto;max-width:200px;object-fit:contain;mix-blend-mode:multiply;}
+    .navbar-brand img{height:56px;width:auto;max-width:200px;object-fit:contain;}
     .navbar-links{display:flex;gap:24px;list-style:none;}
     .navbar-links a{font-size:13px;font-weight:500;color:var(--ink-muted);}
     .navbar-links a:hover{color:var(--ink);}
-    .navbar-cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:white;font-weight:600;font-size:14px;padding:10px 20px;border-radius:var(--radius-full);animation:pulse-ring 2.5s infinite;}
-    @keyframes pulse-ring{0%{box-shadow:0 0 0 0 var(--accent-glow);}70%{box-shadow:0 0 0 10px rgba(34,197,94,0);}100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}}
+    .navbar-cta{display:inline-flex;align-items:center;gap:8px;background:var(--urgency);color:white;font-weight:600;font-size:14px;padding:10px 20px;border-radius:var(--radius-full);animation:pulse-urgency 2.5s infinite;box-shadow:0 0 0 0 var(--urgency-glow);}
+    @keyframes pulse-ring{0%{box-shadow:0 0 0 0 var(--accent-glow);}70%{box-shadow:0 0 0 10px transparent;}100%{box-shadow:0 0 0 0 transparent;}}@keyframes pulse-urgency{0%{box-shadow:0 0 0 0 var(--urgency-glow);}70%{box-shadow:0 0 0 10px transparent;}100%{box-shadow:0 0 0 0 transparent;}}
     .navbar-menu-toggle{display:none;font-size:22px;color:var(--ink);padding:8px;}
     .page-hero{padding:120px 0 60px;background:var(--surface-dark);position:relative;overflow:hidden;}
     .page-hero::before{content:'';position:absolute;top:-20%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,var(--brand) 0%,transparent 70%);opacity:.15;border-radius:50%;filter:blur(80px);}
@@ -34,7 +34,7 @@
     .article-meta{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.5);margin-top:16px;position:relative;z-index:1;}
     .article-meta span{display:flex;align-items:center;gap:6px;}
     .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:var(--radius);font-weight:700;font-size:14px;transition:all var(--transition);}
-    .btn-primary{background:var(--brand);color:var(--btn-text);}
+    .btn-primary{background:var(--urgency);color:#fff;}
     .btn-primary:hover{transform:translateY(-2px);}
     .article-wrap{display:grid;grid-template-columns:1fr 320px;gap:60px;align-items:start;margin-top:60px;}
     .prose h2{font-size:22px;font-weight:800;color:var(--ink);margin:36px 0 12px;letter-spacing:-.3px;}
@@ -68,7 +68,7 @@
     .footer-links a{color:rgba(255,255,255,.45);font-size:14px;}
     .footer-links a:hover{color:white;}
     .footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-    .floating-phone{display:none;position:fixed;bottom:20px;left:16px;right:16px;z-index:99;background:var(--accent);color:white;font-weight:700;font-size:16px;padding:16px;border-radius:var(--radius);text-align:center;box-shadow:0 8px 32px rgba(34,197,94,.4);}
+    .floating-phone{display:none;position:fixed;bottom:20px;left:16px;right:16px;z-index:99;background:var(--urgency);color:white;font-weight:700;font-size:16px;padding:16px;border-radius:var(--radius);text-align:center;box-shadow:0 8px 32px var(--urgency-glow);animation:pulse-urgency 2.5s infinite;}
     @media(max-width:1024px){.article-wrap{grid-template-columns:1fr;}.sidebar{position:static;}}
     @media(max-width:768px){.navbar-links{display:none;}.navbar-menu-toggle{display:block;}.navbar-cta{display:none;}.page-hero{padding:90px 0 50px;}.footer-grid{grid-template-columns:1fr 1fr;}.footer-bottom{flex-direction:column;text-align:center;}.floating-phone{display:flex;align-items:center;justify-content:center;gap:10px;}.section{padding:64px 0;}}
     @media(max-width:480px){.footer-grid{grid-template-columns:1fr;}}
@@ -117,7 +117,7 @@
           "url": "https://desatascosvalencia24h.com/",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://pillaleads.localbrain.app/captured/37012777-c329-4ccb-99fa-e4be4b5c5276/37012777-c329-4ccb-99fa-e4be4b5c5276_10/images/logo.png"
+            "url": "../assets/logo-lajenuco.png"
           }
         }
       },
@@ -168,7 +168,7 @@
 <nav class="navbar" id="navbar">
   <div class="container navbar-inner">
     <a href="../index.html" class="navbar-brand">
-      <img src="https://pillaleads.localbrain.app/captured/37012777-c329-4ccb-99fa-e4be4b5c5276/37012777-c329-4ccb-99fa-e4be4b5c5276_10/images/logo.png" alt="Desatascos urgentes en Valencia">
+      <img src="../assets/logo-lajenuco.png" alt="Desatascos urgentes en Valencia">
     </a>
     <ul class="navbar-links">
       <li><a href="../index.html#servicios">Servicios</a></li>
