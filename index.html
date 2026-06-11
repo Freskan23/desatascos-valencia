@@ -186,43 +186,48 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .hero-grid { grid-template-columns: 1fr; gap: 0; }
   .hero-media { display: none; }
 }
-.hero-content { position: relative; z-index: 2; max-width: 720px; padding: 60px 0; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-  padding: 8px 16px; border-radius: var(--radius-full); font-size: 13px;
-  color: rgba(255,255,255,0.7); margin-bottom: 24px;
+.hero-content { position: relative; z-index: 2; max-width: 580px; padding: 32px 0; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  padding: 7px 15px; border-radius: var(--radius-full); font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,0.88); margin-bottom: 26px; letter-spacing: -0.1px;
 }
-.hero-badge i { color: var(--accent); }
+.hero-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 var(--accent-glow); animation: pulse-dot 2s infinite; }
 .hero h1 {
-  font-size: clamp(36px, 5.5vw, 60px); font-weight: 900; color: white;
-  line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 20px;
+  font-size: clamp(40px, 5.2vw, 64px); font-weight: 900; color: #fff;
+  line-height: 1.03; letter-spacing: -2px; margin-bottom: 20px; text-wrap: balance;
 }
 .hero h1 em { font-style: normal; color: var(--brand-light); }
-.hero-sub { font-size: 18px; color: rgba(255,255,255,0.6); line-height: 1.7; max-width: 540px; margin-bottom: 36px; }
-.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+.hero-sub { font-size: 18px; color: rgba(255,255,255,0.74); line-height: 1.6; max-width: 470px; margin-bottom: 28px; }
+.hero-sub strong { color: #fff; font-weight: 700; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .btn {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 16px 28px; border-radius: var(--radius); font-weight: 700; font-size: 15px;
   transition: all var(--transition); letter-spacing: -0.2px;
 }
-.btn-primary { background: var(--urgency); color: #fff; box-shadow: 0 4px 16px var(--urgency-glow); }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-.btn-whatsapp { background: var(--accent); color: white; box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
-.btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34,197,94,0.4); }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--urgency); color: #fff; box-shadow: 0 6px 20px var(--urgency-glow); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px var(--urgency-glow); }
+.btn-whatsapp { background: var(--accent); color: white; box-shadow: 0 6px 20px rgba(34,177,76,0.32); }
+.btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(34,177,76,0.42); }
 .btn-outline { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.2); }
 .btn-outline:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.4); }
+.hero-reassure { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.58); margin-bottom: 34px; }
+.hero-reassure i { color: var(--accent); }
 
-/* Trust badges */
-.trust-bar { display: flex; gap: 36px; flex-wrap: wrap; }
-.trust-item { display: flex; align-items: center; gap: 10px; }
-.trust-icon {
-  width: 42px; height: 42px; border-radius: 10px;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
-  display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--brand-light);
-}
-.trust-text { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.4; }
-.trust-text strong { display: block; color: white; font-size: 15px; font-weight: 700; }
+/* Tira de confianza: rating Google + promesas */
+.hero-trust { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.hero-rating { display: flex; align-items: center; gap: 11px; }
+.hero-stars { color: #fbbf24; font-size: 14px; letter-spacing: 2px; white-space: nowrap; }
+.hero-rating .r-text { font-size: 12.5px; color: rgba(255,255,255,0.6); line-height: 1.3; }
+.hero-rating .r-text strong { color: #fff; font-size: 15px; font-weight: 800; }
+.hero-trust .divider { width: 1px; height: 32px; background: rgba(255,255,255,0.14); }
+.hero-chips { display: flex; flex-wrap: wrap; gap: 9px 16px; }
+.hero-chips span { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: rgba(255,255,255,0.8); }
+.hero-chips i { color: var(--accent); font-size: 11px; }
+@media (max-width: 480px) { .hero-trust .divider { display: none; } }
 
 /* === SERVICES === */
 .services-grid { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 48px; justify-content: center; }
@@ -598,29 +603,25 @@ textarea.form-input { resize: vertical; min-height: 110px; }
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-content">
-      <div class="hero-badge"><i class="fas fa-bolt"></i> Lajenuco · Profesionales de confianza desde 2009</div>
-      <h1>Desatascos urgentes en Valencia</h1>
-      <p class="hero-sub">Servicio profesional de desatascos en Valencia. Disponibles las 24 horas, todos los días del año. Llegamos en 30 minutos.</p>
+      <div class="hero-eyebrow"><span class="dot"></span> Disponibles ahora en Valencia · 24 h</div>
+      <h1>Desatascos <em>urgentes</em> en Valencia</h1>
+      <p class="hero-sub">Llegamos en <strong>30 minutos</strong> con presupuesto cerrado antes de empezar. 24 horas, los 365 días del año.</p>
       <div class="hero-actions">
         <a href="tel:+34677123123" class="btn btn-primary"><i class="fas fa-phone"></i> Llamar ahora</a>
-        <a href="https://wa.me/34677123123" class="btn btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="https://wa.me/34677123123" class="btn btn-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
       </div>
-      <div class="trust-bar">
-        <div class="trust-item">
-          <div class="trust-icon"><i class="fas fa-clock"></i></div>
-          <div class="trust-text"><strong>24 horas</strong>Todos los días</div>
+      <div class="hero-reassure"><i class="fas fa-bolt"></i> Te llamamos en menos de 5 minutos, sin compromiso</div>
+      <div class="hero-trust">
+        <div class="hero-rating">
+          <span class="hero-stars">★★★★★</span>
+          <span class="r-text"><strong>4.8</strong> en Google<br>opiniones verificadas</span>
         </div>
-        <div class="trust-item">
-          <div class="trust-icon"><i class="fas fa-shield-halved"></i></div>
-          <div class="trust-text"><strong>15+ años</strong>Experiencia</div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-icon"><i class="fas fa-star"></i></div>
-          <div class="trust-text"><strong>4.8 ★</strong>en Google</div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-icon"><i class="fas fa-hand-holding-dollar"></i></div>
-          <div class="trust-text"><strong>Sin sorpresas</strong>Precio cerrado</div>
+        <span class="divider"></span>
+        <div class="hero-chips">
+          <span><i class="fas fa-check"></i> 24 h · 365 días</span>
+          <span><i class="fas fa-check"></i> 15+ años</span>
+          <span><i class="fas fa-check"></i> Garantía 48 h</span>
+          <span><i class="fas fa-check"></i> Precio cerrado</span>
         </div>
       </div>
     </div>
