@@ -163,6 +163,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
   opacity: 0.08; border-radius: 50%; filter: blur(100px);
 }
+/* Vídeo hero (solo desktop) */
+.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; z-index: 0; }
+.hero-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(135deg, rgba(15,23,42,0.78), rgba(15,23,42,0.55)); pointer-events: none; }
+@media (max-width: 768px) { .hero-video, .hero-overlay { display: none; } }
 .hero-content { position: relative; z-index: 2; max-width: 720px; padding: 60px 0; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
@@ -524,6 +528,10 @@ textarea.form-input { resize: vertical; min-height: 110px; }
 
 <!-- HERO -->
 <section class="hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/img/hero-tubolimp-valencia.webp">
+    <source src="assets/video/hero.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
   <div class="container">
     <div class="hero-content">
       <div class="hero-badge"><i class="fas fa-bolt"></i> Lajenuco · Profesionales de confianza desde 2009</div>
