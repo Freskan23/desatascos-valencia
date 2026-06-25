@@ -1,0 +1,127 @@
+// Prisma 7 — generador nuevo `prisma-client` (ESM). Cliente en src/generated/prisma (gitignored).
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Prisma 7: las URLs van en prisma.config.ts. En runtime se usa el driver adapter de Neon.
+}
+
+// ─────────── Better Auth (reconciliar con `@better-auth/cli generate` antes de migrar) ───────────
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          String    @default("user") // "admin" | "user"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  leads         Lead[]    @relation("LeadAssignee")
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// ─────────── App: Leads ───────────
+enum LeadChannel {
+  form
+  chat
+}
+
+enum LeadStatus {
+  nuevo
+  atendido
+  descartado
+}
+
+model Lead {
+  id         String      @id @default(cuid())
+  name       String
+  phone      String // OBLIGATORIO
+  email      String?
+  message    String?
+  sourcePage String?
+  channel    LeadChannel
+  photoRef   String?
+  status     LeadStatus  @default(nuevo)
+  notes      String?
+  assigneeId String?
+  assignee   User?       @relation("LeadAssignee", fields: [assigneeId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([channel])
+}
+
+// ─────────── App: Analítica ───────────
+model Event {
+  id          String   @id @default(cuid())
+  type        String // "pageview" | "click" | "section_view"
+  url         String
+  category    String? // call | whatsapp | form-submit | chat-open | cta | <sectionId>
+  label       String?
+  sessionId   String?
+  visitorHash String
+  referrer    String?
+  meta        Json?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([url, createdAt])
+  @@index([type, createdAt])
+  @@index([category, createdAt])
+  @@index([visitorHash, createdAt])
+}

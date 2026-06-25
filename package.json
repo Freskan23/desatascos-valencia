@@ -1,0 +1,33 @@
+{
+  "name": "lajenuco-sitio",
+  "type": "module",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "prisma generate && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "auth:generate": "npx @better-auth/cli generate --output prisma/auth-schema.prisma",
+    "seed:admin": "node --import tsx scripts/seed-admin.ts"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.0.0",
+    "@astrojs/vercel": "^11.0.0",
+    "@neondatabase/serverless": "^1.1.0",
+    "@prisma/adapter-neon": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "astro": "^7.0.2",
+    "better-auth": "^1.6.20",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "prisma": "^7.8.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
