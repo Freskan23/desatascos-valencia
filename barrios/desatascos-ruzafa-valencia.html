@@ -120,6 +120,8 @@ img{max-width:100%;display:block;}a{text-decoration:none;color:inherit;}button{c
 @media(max-width:768px){.navbar-links{display:none;}.navbar-menu-toggle{display:block;}.navbar-cta{display:none;}.page-hero{padding:100px 0 60px;}.footer-grid{grid-template-columns:1fr 1fr;}.footer-bottom{flex-direction:column;text-align:center;}.floating-phone{display:flex;align-items:center;justify-content:center;gap:10px;}.section{padding:64px 0;}.cards-grid{grid-template-columns:1fr;}}
 @media(max-width:480px){.page-hero .actions{flex-direction:column;}.footer-grid{grid-template-columns:1fr;}}
   </style>
+<link rel="stylesheet" href="../assets/megamenu.css">
+<style id="page-hero-img-override">.page-hero{background-image:linear-gradient(135deg,rgba(15,23,42,.9),rgba(15,23,42,.72)),url("../assets/img/barrio-ruzafa.webp");background-size:cover;background-position:center;}</style>
 </head>
 <body>
 
@@ -130,16 +132,62 @@ img{max-width:100%;display:block;}a{text-decoration:none;color:inherit;}button{c
       <img src="../assets/logo-lajenuco.png" alt="Desatascos urgentes en Valencia">
     </a>
     <ul class="navbar-links">
-      <li><a href="../index.html#servicios">Servicios</a></li>
+      <li class="has-mega" data-mega="servicios"><a href="../index.html#servicios">Servicios <i class="fas fa-chevron-down mega-caret"></i></a></li>
+      <li class="has-mega" data-mega="zonas"><a href="../index.html#zonas">Zonas <i class="fas fa-chevron-down mega-caret"></i></a></li>
       <li><a href="../index.html#proceso">Cómo trabajamos</a></li>
-      <li><a href="../index.html#precios">Precios</a></li>
       <li><a href="../index.html#faq">FAQ</a></li>
+      <li><a href="../blog/index.html">Blog</a></li>
       <li><a href="../index.html#contacto">Contacto</a></li>
     </ul>
     <a href="tel:+34677123123" class="navbar-cta"><i class="fas fa-phone"></i> +34 677 123 123</a>
     <button class="navbar-menu-toggle" aria-label="Menu" onclick="var l=document.querySelector('.navbar-links');l.style.display=l.style.display==='flex'?'none':'flex';l.style.cssText='display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:white;padding:16px 24px;box-shadow:0 8px 32px rgba(0,0,0,.1);gap:12px;z-index:99'">
       <i class="fas fa-bars"></i>
     </button>
+  </div>
+
+  <div class="mega" id="mega-servicios" role="region" aria-label="Servicios">
+    <div class="mega-inner">
+      <div class="mega-main">
+        <span class="mega-col-head">Servicios de desatasco en Valencia</span>
+        <div class="mega-services">
+          <a class="mega-link" href="../servicios/desatasco-tuberias-valencia.html"><span class="mega-ico"><i class="fas fa-bolt"></i></span><span><h4>Desatasco de tuberías</h4><p>Alta presión, cualquier diámetro</p></span></a>
+          <a class="mega-link" href="../servicios/desatasco-wc-valencia.html"><span class="mega-ico"><i class="fas fa-toilet"></i></span><span><h4>Desatasco de WC</h4><p>Sin obras, en minutos</p></span></a>
+          <a class="mega-link" href="../servicios/desatasco-fregadero-valencia.html"><span class="mega-ico"><i class="fas fa-sink"></i></span><span><h4>Fregadero y ducha</h4><p>Sifones y bajantes a fondo</p></span></a>
+          <a class="mega-link" href="../servicios/desatasco-canalones-valencia.html"><span class="mega-ico"><i class="fas fa-cloud-rain"></i></span><span><h4>Canalones y bajantes</h4><p>Antes de las lluvias</p></span></a>
+          <a class="mega-link" href="../servicios/inspeccion-camara-tuberias-valencia.html"><span class="mega-ico"><i class="fas fa-camera"></i></span><span><h4>Inspección con cámara</h4><p>Diagnóstico exacto, sin obras</p></span></a>
+          <a class="mega-link" href="../servicios/limpieza-fosa-septica-valencia.html"><span class="mega-ico"><i class="fas fa-truck"></i></span><span><h4>Fosa séptica</h4><p>Comunidades y empresas</p></span></a>
+        </div>
+      </div>
+      <aside class="mega-promo">
+        <h4>¿Es urgente ahora?</h4>
+        <p>Técnico en tu puerta en ~30 min. 24h, todos los días.</p>
+        <a class="mega-phone" href="tel:+34677123123"><i class="fas fa-phone"></i> +34 677 123 123</a>
+      </aside>
+    </div>
+  </div>
+  <div class="mega" id="mega-zonas" role="region" aria-label="Zonas">
+    <div class="mega-inner">
+      <div class="mega-main">
+        <span class="mega-col-head">Barrios de Valencia</span>
+        <div class="mega-services">
+          <a class="mega-link" href="../barrios/desatascos-ruzafa-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Ruzafa</h4><p>Russafa y entorno del mercado</p></span></a>
+          <a class="mega-link" href="../barrios/desatascos-benimaclet-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Benimaclet</h4><p>Zona universitaria</p></span></a>
+          <a class="mega-link" href="../barrios/desatascos-campanar-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Campanar</h4><p>Hospital La Fe y alrededores</p></span></a>
+          <a class="mega-link" href="../barrios/desatascos-patraix-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Patraix</h4><p>Safranar y Vara de Quart</p></span></a>
+          <a class="mega-link" href="../barrios/desatascos-cabanyal-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>El Cabanyal</h4><p>Marítimo y La Malvarrosa</p></span></a>
+          <a class="mega-link" href="../barrios/desatascos-jesus-valencia.html"><span class="mega-ico"><i class="fas fa-location-dot"></i></span><span><h4>Jesús</h4><p>Morvedre y Mercat de Jesús</p></span></a>
+        </div>
+        <span class="mega-col-head" style="margin-top:16px;">También cubrimos</span>
+        <div class="mega-zonas-extra" style="margin-top:8px;">
+          <span class="mega-zona-pill">Mislata</span><span class="mega-zona-pill">Torrent</span><span class="mega-zona-pill">Burjassot</span><span class="mega-zona-pill">Paterna</span><span class="mega-zona-pill">Alboraya</span><span class="mega-zona-pill">Quart de Poblet</span><span class="mega-zona-pill">Manises</span><span class="mega-zona-pill">Sedaví</span>
+        </div>
+      </div>
+      <aside class="mega-promo">
+        <h4>¿No ves tu zona?</h4>
+        <p>Cubrimos toda Valencia y el área metropolitana. Llámanos y lo confirmamos.</p>
+        <a class="mega-phone" href="tel:+34677123123"><i class="fas fa-phone"></i> +34 677 123 123</a>
+      </aside>
+    </div>
   </div>
 </nav>
 
@@ -334,5 +382,6 @@ img{max-width:100%;display:block;}a{text-decoration:none;color:inherit;}button{c
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://desatascosvalencia24h.com/#organization","name":"Lajenuco","alternateName":["Desatascos Lajenuco","Desatascos urgentes en Valencia"],"url":"https://desatascosvalencia24h.com/","logo":{"@type":"ImageObject","url":"https://desatascosvalencia24h.com/assets/logo-lajenuco.png","width":935,"height":268},"telephone":"+34677123123","email":"info@desatascosvalencia24h.com","foundingDate":"2009","areaServed":{"@type":"City","name":"Valencia"},"sameAs":["https://www.facebook.com/enrique-desco-sl-822777641105130/"]},{"@type":"WebSite","@id":"https://desatascosvalencia24h.com/#website","url":"https://desatascosvalencia24h.com/","name":"Lajenuco · Desatascos urgentes en Valencia","inLanguage":"es-ES","publisher":{"@id":"https://desatascosvalencia24h.com/#organization"}}]}
 </script>
+<script src="../assets/megamenu.js" defer></script>
 </body>
 </html>
