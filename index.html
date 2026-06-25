@@ -1216,51 +1216,79 @@ textarea.form-input { resize: vertical; min-height: 110px; }
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Lajenuco",
-  "alternateName": ["Desatascos Lajenuco", "Desatascos urgentes en Valencia"],
-  "brand": {"@type": "Brand", "name": "Lajenuco", "logo": "https://desatascos-valencia.vercel.app/assets/logo-lajenuco.png"},
-  "logo": "https://desatascos-valencia.vercel.app/assets/logo-lajenuco.png",
-  "image": "https://desatascos-valencia.vercel.app/assets/logo-lajenuco.png",
-  "description": "Lajenuco — servicio profesional de desatascos urgentes en Valencia disponible 24 horas al día, 365 días al año.",
-  "url": "https://desatascosvalencia24h.com",
-  "telephone": "+34677123123",
-  "email": "info@desatascosvalencia24h.com",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Valencia",
-    "addressRegion": "Comunitat Valenciana",
-    "addressCountry": "ES"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 39.4699,
-    "longitude": -0.3763
-  },
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-    "opens": "00:00",
-    "closes": "23:59"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "87"
-  },
-  "sameAs": ["https://www.facebook.com/enrique-desco-sl-822777641105130/"],
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Servicios de desatascos",
-    "itemListElement": [
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Desatasco de tuberías"}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Desatasco de WC e inodoros"}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Desatasco de fregadero y ducha"}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Desatasco de canalones y bajantes"}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Inspección con cámara"}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Limpieza de fosas sépticas"}}
-    ]
-  }
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://desatascosvalencia24h.com/#organization",
+      "name": "Lajenuco",
+      "alternateName": ["Desatascos Lajenuco", "Desatascos urgentes en Valencia"],
+      "url": "https://desatascosvalencia24h.com/",
+      "logo": {"@type": "ImageObject", "url": "https://desatascosvalencia24h.com/assets/logo-lajenuco.png", "width": 935, "height": 268},
+      "image": "https://desatascosvalencia24h.com/assets/logo-lajenuco.png",
+      "description": "Lajenuco, empresa de desatascos urgentes en Valencia disponible 24 horas al día, los 365 días del año.",
+      "telephone": "+34677123123",
+      "email": "info@desatascosvalencia24h.com",
+      "foundingDate": "2009",
+      "areaServed": {"@type": "City", "name": "Valencia"},
+      "contactPoint": {"@type": "ContactPoint", "telephone": "+34677123123", "contactType": "customer service", "areaServed": "ES", "availableLanguage": "Spanish"},
+      "sameAs": ["https://www.facebook.com/enrique-desco-sl-822777641105130/"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://desatascosvalencia24h.com/#website",
+      "url": "https://desatascosvalencia24h.com/",
+      "name": "Lajenuco · Desatascos urgentes en Valencia",
+      "inLanguage": "es-ES",
+      "publisher": {"@id": "https://desatascosvalencia24h.com/#organization"}
+    },
+    {
+      "@type": ["LocalBusiness", "Plumber"],
+      "@id": "https://desatascosvalencia24h.com/#business",
+      "name": "Lajenuco — Desatascos urgentes en Valencia",
+      "image": "https://desatascosvalencia24h.com/assets/img/hero-tubolimp-valencia.webp",
+      "logo": "https://desatascosvalencia24h.com/assets/logo-lajenuco.png",
+      "url": "https://desatascosvalencia24h.com/",
+      "telephone": "+34677123123",
+      "email": "info@desatascosvalencia24h.com",
+      "priceRange": "€€",
+      "currenciesAccepted": "EUR",
+      "paymentAccepted": "Efectivo, Tarjeta, Transferencia, Bizum",
+      "slogan": "Llegamos en 30 minutos",
+      "description": "Servicio profesional de desatascos urgentes en Valencia y área metropolitana. Llegamos en 30 minutos, presupuesto cerrado antes de empezar y garantía de 48 horas. Disponibles 24 horas, los 365 días del año.",
+      "parentOrganization": {"@id": "https://desatascosvalencia24h.com/#organization"},
+      "address": {"@type": "PostalAddress", "addressLocality": "Valencia", "addressRegion": "Comunitat Valenciana", "postalCode": "46000", "addressCountry": "ES"},
+      "geo": {"@type": "GeoCoordinates", "latitude": 39.4699, "longitude": -0.3763},
+      "hasMap": "https://www.google.com/maps?q=Desatascos+urgentes+en+Valencia",
+      "areaServed": [
+        {"@type": "City", "name": "Valencia"},
+        {"@type": "City", "name": "Mislata"},
+        {"@type": "City", "name": "Torrent"},
+        {"@type": "City", "name": "Burjassot"},
+        {"@type": "City", "name": "Paterna"},
+        {"@type": "City", "name": "Alboraya"},
+        {"@type": "City", "name": "Quart de Poblet"},
+        {"@type": "City", "name": "Manises"},
+        {"@type": "City", "name": "Sedaví"}
+      ],
+      "serviceArea": {"@type": "GeoCircle", "geoMidpoint": {"@type": "GeoCoordinates", "latitude": 39.4699, "longitude": -0.3763}, "geoRadius": "25000"},
+      "knowsAbout": ["desatascos urgentes", "desatasco de tuberías", "desatasco de WC", "limpieza de fosas sépticas", "inspección con cámara de tuberías", "saneamiento"],
+      "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "00:00", "closes": "23:59"},
+      "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "87", "bestRating": "5"},
+      "sameAs": ["https://www.facebook.com/enrique-desco-sl-822777641105130/"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de desatascos en Valencia",
+        "itemListElement": [
+          {"@type": "Offer", "priceCurrency": "EUR", "itemOffered": {"@type": "Service", "name": "Desatasco de tuberías", "url": "https://desatascosvalencia24h.com/servicios/desatasco-tuberias-valencia.html", "areaServed": {"@type": "City", "name": "Valencia"}}},
+          {"@type": "Offer", "priceCurrency": "EUR", "itemOffered": {"@type": "Service", "name": "Desatasco de WC e inodoros", "url": "https://desatascosvalencia24h.com/servicios/desatasco-wc-valencia.html", "areaServed": {"@type": "City", "name": "Valencia"}}},
+          {"@type": "Offer", "priceCurrency": "EUR", "itemOffered": {"@type": "Service", "name": "Desatasco de fregadero y ducha", "url": "https://desatascosvalencia24h.com/servicios/desatasco-fregadero-valencia.html", "areaServed": {"@type": "City", "name": "Valencia"}}},
+          {"@type": "Offer", "priceCurrency": "EUR", "itemOffered": {"@type": "Service", "name": "Desatasco de canalones y bajantes", "url": "https://desatascosvalencia24h.com/servicios/desatasco-canalones-valencia.html", "areaServed": {"@type": "City", "name": "Valencia"}}},
+          {"@type": "Offer", "priceCurrency": "EUR", "itemOffered": {"@type": "Service", "name": "Inspección con cámara", "url": "https://desatascosvalencia24h.com/servicios/inspeccion-camara-tuberias-valencia.html", "areaServed": {"@type": "City", "name": "Valencia"}}},
+          {"@type": "Offer", "priceCurrency": "EUR", "itemOffered": {"@type": "Service", "name": "Limpieza de fosas sépticas", "url": "https://desatascosvalencia24h.com/servicios/limpieza-fosa-septica-valencia.html", "areaServed": {"@type": "City", "name": "Valencia"}}}
+        ]
+      }
+    }
+  ]
 }
 </script>
 
@@ -1268,6 +1296,8 @@ textarea.form-input { resize: vertical; min-height: 110px; }
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "inLanguage": "es-ES",
+  "about": {"@id": "https://desatascosvalencia24h.com/#business"},
   "mainEntity": [
     {"@type": "Question", "name": "¿Cuánto tardáis en llegar a Valencia?", "acceptedAnswer": {"@type": "Answer", "text": "En la mayoría de urgencias llegamos en 30 minutos o menos. Tenemos técnicos distribuidos por toda Valencia y el área metropolitana para garantizar tiempos de respuesta mínimos, incluso de madrugada o en festivos."}},
     {"@type": "Question", "name": "¿Trabajáis 24 horas, incluidos festivos?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Estamos disponibles las 24 horas del día, los 365 días del año, sin excepción. Un atasco no avisa, y nosotros tampoco cerramos."}},
@@ -1283,9 +1313,9 @@ textarea.form-input { resize: vertical; min-height: 110px; }
 
 <script type="application/ld+json">
 [
-  {"@context":"https://schema.org","@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"author":{"@type":"Person","name":"Vicente Bosch"},"datePublished":"2024-12-01","reviewBody":"Son unos profesionales, súper atentos y muy empatizados con el cliente. Bravo por empresas con grandes profesionales.","itemReviewed":{"@type":"LocalBusiness","name":"Desatascos urgentes en Valencia","url":"https://desatascosvalencia24h.com"}},
-  {"@context":"https://schema.org","@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"author":{"@type":"Person","name":"Alba Ojer Collado"},"datePublished":"2025-01-15","reviewBody":"No les doy más estrellas porque no se pueden. Una empresa espectacular, profesionales, eficaces y muy amables.","itemReviewed":{"@type":"LocalBusiness","name":"Desatascos urgentes en Valencia","url":"https://desatascosvalencia24h.com"}},
-  {"@context":"https://schema.org","@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"author":{"@type":"Person","name":"Alejandra Domínguez"},"datePublished":"2025-01-10","reviewBody":"Sin ninguna duda muy recomendables y buenos profesionales.","itemReviewed":{"@type":"LocalBusiness","name":"Desatascos urgentes en Valencia","url":"https://desatascosvalencia24h.com"}}
+  {"@context":"https://schema.org","@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"author":{"@type":"Person","name":"Vicente Bosch"},"datePublished":"2024-12-01","reviewBody":"Son unos profesionales, súper atentos y muy empatizados con el cliente. Bravo por empresas con grandes profesionales.","itemReviewed":{"@id":"https://desatascosvalencia24h.com/#business"}},
+  {"@context":"https://schema.org","@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"author":{"@type":"Person","name":"Alba Ojer Collado"},"datePublished":"2025-01-15","reviewBody":"No les doy más estrellas porque no se pueden. Una empresa espectacular, profesionales, eficaces y muy amables.","itemReviewed":{"@id":"https://desatascosvalencia24h.com/#business"}},
+  {"@context":"https://schema.org","@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"author":{"@type":"Person","name":"Alejandra Domínguez"},"datePublished":"2025-01-10","reviewBody":"Sin ninguna duda muy recomendables y buenos profesionales.","itemReviewed":{"@id":"https://desatascosvalencia24h.com/#business"}}
 ]
 </script>
 
