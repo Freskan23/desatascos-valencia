@@ -1,0 +1,85 @@
+---
+const { title = 'Panel' } = Astro.props;
+const user = Astro.locals.user;
+const path = Astro.url.pathname;
+const isAdmin = user?.role === 'admin';
+
+const nav = [
+  { href: '/dashboard', label: 'Métricas', icon: 'M3 13h2v8H3v-8zm4-6h2v14H7V7zm4 3h2v11h-2V10zm4-7h2v18h-2V3zm4 10h2v8h-2v-8z' },
+  { href: '/dashboard/leads', label: 'Leads', icon: 'M16 11c1.66 0 3-1.34 3-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z' },
+];
+if (isAdmin) nav.push({ href: '/dashboard/editor', label: 'Editor', icon: 'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z' });
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>{title} · Lajenuco</title>
+  <style>
+    :root{--brand:#1e6fc8;--accent:#22b14c;--ink:#0f172a;--ink-muted:#64748b;--border:#e2e8f0;--surface:#fff;--surface-alt:#f8fafc;--radius:12px;--font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--font);background:var(--surface-alt);color:var(--ink);}
+    .shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh;}
+    .side{background:#0f172a;color:#fff;display:flex;flex-direction:column;padding:20px 14px;position:sticky;top:0;height:100vh;}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;padding:6px 10px 18px;}
+    .brand b{color:#4a93de;}
+    .nav{display:flex;flex-direction:column;gap:4px;flex:1;}
+    .nav a{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:rgba(255,255,255,.72);text-decoration:none;font-size:14px;font-weight:500;transition:background .15s,color .15s;}
+    .nav a:hover{background:rgba(255,255,255,.06);color:#fff;}
+    .nav a.active{background:var(--brand);color:#fff;}
+    .nav svg{width:18px;height:18px;fill:currentColor;flex-shrink:0;}
+    .side-foot{border-top:1px solid rgba(255,255,255,.08);padding-top:14px;margin-top:14px;}
+    .who{font-size:12px;color:rgba(255,255,255,.55);padding:0 12px 10px;line-height:1.5;}
+    .who b{color:#fff;display:block;font-size:13px;}
+    .role{display:inline-block;margin-top:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:999px;background:rgba(34,177,76,.18);color:#4ade80;}
+    .role.user{background:rgba(74,147,222,.18);color:#7cb3ee;}
+    .logout{width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,.6);font:inherit;font-size:13px;padding:10px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;}
+    .logout:hover{background:rgba(239,68,68,.14);color:#fca5a5;}
+    .main{padding:32px 36px;max-width:1100px;}
+    .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+    .head h1{font-size:24px;font-weight:800;letter-spacing:-.4px;}
+    a.view-site{font-size:13px;color:var(--ink-muted);text-decoration:none;}
+    a.view-site:hover{color:var(--brand);}
+    @media(max-width:760px){.shell{grid-template-columns:1fr;}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;}.nav{flex-direction:row;flex-wrap:wrap;}.side-foot{margin:0;border:none;padding:0;}.who{display:none;}.main{padding:20px;}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">la<b>jenuco</b></div>
+      <nav class="nav">
+        {nav.map((n) => (
+          <a href={n.href} class={path === n.href ? 'active' : ''}>
+            <svg viewBox="0 0 24 24"><path d={n.icon} /></svg>{n.label}
+          </a>
+        ))}
+      </nav>
+      <div class="side-foot">
+        <div class="who">
+          <b>{user?.email}</b>
+          <span class={'role ' + (isAdmin ? '' : 'user')}>{isAdmin ? 'Administrador' : 'Usuario'}</span>
+        </div>
+        <button class="logout" id="logoutBtn">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+          Cerrar sesión
+        </button>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="head">
+        <h1>{title}</h1>
+        <a class="view-site" href="/" target="_blank" rel="noopener">Ver web ↗</a>
+      </div>
+      <slot />
+    </main>
+  </div>
+  <script>
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+      await fetch('/api/auth/sign-out', { method: 'POST', credentials: 'same-origin' });
+      location.href = '/login';
+    });
+  </script>
+</body>
+</html>

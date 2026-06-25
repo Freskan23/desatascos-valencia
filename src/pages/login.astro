@@ -1,0 +1,79 @@
+---
+export const prerender = false;
+import { auth } from '@/lib/auth';
+
+// Si ya hay sesión, al panel.
+const session = await auth.api.getSession({ headers: Astro.request.headers });
+if (session) return Astro.redirect('/dashboard');
+
+const next = Astro.url.searchParams.get('next') || '/dashboard';
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Acceso · Lajenuco</title>
+  <style>
+    :root{--brand:#1e6fc8;--accent:#22b14c;--ink:#0f172a;--ink-muted:#64748b;--border:#e2e8f0;--radius:12px;--font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--font);min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(130% 120% at 70% -10%,#18263f 0%,#0f172a 55%);padding:20px;}
+    .card{background:#fff;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.35);width:100%;max-width:380px;padding:36px 32px;}
+    .brand{font-weight:800;font-size:22px;text-align:center;margin-bottom:6px;color:var(--ink);}
+    .brand b{color:var(--brand);}
+    .sub{text-align:center;color:var(--ink-muted);font-size:13px;margin-bottom:26px;}
+    label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin:14px 0 6px;}
+    input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;outline:none;}
+    input:focus{border-color:var(--brand);}
+    button{width:100%;margin-top:22px;padding:13px;border:none;border-radius:10px;background:var(--brand);color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .15s;}
+    button:hover{opacity:.93;}
+    button:disabled{opacity:.6;cursor:not-allowed;}
+    .err{display:none;margin-top:16px;font-size:13px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 12px;}
+    .foot{text-align:center;margin-top:20px;font-size:12px;color:var(--ink-muted);}
+    .foot a{color:var(--ink-muted);}
+  </style>
+</head>
+<body>
+  <form class="card" id="loginForm">
+    <div class="brand">la<b>jenuco</b></div>
+    <div class="sub">Panel de control · acceso privado</div>
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" autocomplete="email" required />
+    <label for="password">Contraseña</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required />
+    <button type="submit" id="btn">Entrar</button>
+    <div class="err" id="err"></div>
+    <div class="foot"><a href="/">← Volver a la web</a></div>
+  </form>
+  <script define:vars={{ next }}>
+    const form = document.getElementById('loginForm');
+    const btn = document.getElementById('btn');
+    const err = document.getElementById('err');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.style.display = 'none';
+      btn.disabled = true; btn.textContent = 'Entrando…';
+      try {
+        const res = await fetch('/api/auth/sign-in/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({
+            email: document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value,
+          }),
+        });
+        if (res.ok) { location.href = next; return; }
+        const data = await res.json().catch(() => ({}));
+        err.textContent = data.message || 'Email o contraseña incorrectos.';
+        err.style.display = 'block';
+      } catch {
+        err.textContent = 'Error de conexión. Inténtalo de nuevo.';
+        err.style.display = 'block';
+      }
+      btn.disabled = false; btn.textContent = 'Entrar';
+    });
+  </script>
+</body>
+</html>
