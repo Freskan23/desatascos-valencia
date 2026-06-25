@@ -236,6 +236,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .hero-chips i { color: var(--accent); font-size: 11px; }
 @media (max-width: 480px) { .hero-trust .divider { display: none; } }
 
+/* === BLOQUE RESPUESTA (AEO: respuesta citable front-loaded) === */
+.answer-band { background: var(--surface-alt); border-bottom: 1px solid var(--border); padding: 28px 0; }
+.answer-band p { max-width: 920px; margin: 0 auto; font-size: 16px; line-height: 1.75; color: var(--ink-light); text-align: center; }
+.answer-band strong { color: var(--ink); font-weight: 700; }
+@media (max-width: 768px) { .answer-band p { text-align: left; font-size: 15px; } }
+
 /* === SERVICES === */
 .services-grid { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 48px; justify-content: center; }
 .services-grid > * { flex: 1 1 280px; max-width: 360px; }
@@ -640,6 +646,13 @@ textarea.form-input { resize: vertical; min-height: 110px; }
         <span class="hero-media-tag"><i class="fas fa-circle"></i> Así actuamos sobre el atasco</span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- BLOQUE RESPUESTA (resumen citable para usuarios y buscadores con IA) -->
+<section class="answer-band">
+  <div class="container">
+    <p><strong>Lajenuco</strong> es una empresa de <strong>desatascos urgentes en Valencia</strong> disponible las <strong>24 horas, los 365 días del año</strong>. Un técnico llega a tu domicilio en aproximadamente <strong>30 minutos</strong>, hace un diagnóstico gratuito y te da un <strong>presupuesto cerrado antes de empezar</strong>: desde <strong>105 €/hora</strong> en horario diurno y desde 140 €/hora en horario nocturno y festivos. Todos los trabajos incluyen <strong>garantía de 48 horas</strong>. Desatascamos tuberías, WC, fregaderos y canalones, y hacemos inspección con cámara y limpieza de fosas sépticas en Valencia capital y su área metropolitana: Ruzafa, Benimaclet, Campanar, Patraix, Cabanyal, Jesús, Mislata, Torrent y Paterna.</p>
   </div>
 </section>
 
@@ -1117,7 +1130,7 @@ textarea.form-input { resize: vertical; min-height: 110px; }
         <input type="email" name="email" class="form-input" placeholder="Tu email (opcional)">
         <textarea name="mensaje" class="form-input" placeholder="Cuéntanos qué necesitas..."></textarea>
         <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
-        <button type="submit" class="btn-submit" id="contactSubmit"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
+        <button type="submit" class="btn-submit" id="contactSubmit"><i class="fas fa-phone-volume"></i> Que me llamen gratis ahora</button>
         <div id="contactStatus" style="font-size:13px;margin-top:8px;display:none;"></div>
       </form>
       <div class="contact-info">
