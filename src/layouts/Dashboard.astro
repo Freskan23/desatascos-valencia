@@ -5,8 +5,13 @@ const path = Astro.url.pathname;
 const isAdmin = user?.role === 'admin';
 
 const nav = [
-  { href: '/dashboard', label: 'Métricas', icon: 'M3 13h2v8H3v-8zm4-6h2v14H7V7zm4 3h2v11h-2V10zm4-7h2v18h-2V3zm4 10h2v8h-2v-8z' },
-  { href: '/dashboard/leads', label: 'Leads', icon: 'M16 11c1.66 0 3-1.34 3-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z' },
+  { href: '/preview-dashboard-dueno', label: 'Resumen', icon: 'M3 13h2v8H3v-8zm4-6h2v14H7V7zm4 3h2v11h-2V10zm4-7h2v18h-2V3zm4 10h2v8h-2v-8z' },
+  { href: '/preview-dashboard-comercial', label: 'Leads', icon: 'M16 11c1.66 0 3-1.34 3-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z' },
+  { href: '/preview-dashboard-seo', label: 'SEO', icon: 'M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' },
+];
+const navSoon = [
+  { label: 'Facturación', icon: 'M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z' },
+  { label: 'Configuración', icon: 'M19.14 12.94a7.14 7.14 0 0 0 .06-.94 7.14 7.14 0 0 0-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.3 7.3 0 0 0-1.62-.94L14.4 2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.36 2.66c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 8.84a.5.5 0 0 0 .12.64l2.03 1.58a7.14 7.14 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.14.24.42.32.6.22l2.39-.96c.49.38 1.03.7 1.62.94l.36 2.66c.05.24.25.4.5.4h3.8c.25 0 .45-.16.5-.4l.36-2.66c.59-.24 1.13-.56 1.62-.94l2.39.96c.24.1.5 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z' },
 ];
 if (isAdmin) nav.push({ href: '/dashboard/editor', label: 'Editor', icon: 'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z' });
 ---
@@ -30,6 +35,8 @@ if (isAdmin) nav.push({ href: '/dashboard/editor', label: 'Editor', icon: 'M3 17
     .nav a:hover{background:rgba(255,255,255,.06);color:#fff;}
     .nav a.active{background:var(--brand);color:#fff;}
     .nav svg{width:18px;height:18px;fill:currentColor;flex-shrink:0;}
+    .nav-soon{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:rgba(255,255,255,.28);font-size:14px;font-weight:500;cursor:not-allowed;}
+    .nav-soon svg{width:18px;height:18px;fill:currentColor;flex-shrink:0;}
     .side-foot{border-top:1px solid rgba(255,255,255,.08);padding-top:14px;margin-top:14px;}
     .who{font-size:12px;color:rgba(255,255,255,.55);padding:0 12px 10px;line-height:1.5;}
     .who b{color:#fff;display:block;font-size:13px;}
@@ -54,6 +61,11 @@ if (isAdmin) nav.push({ href: '/dashboard/editor', label: 'Editor', icon: 'M3 17
           <a href={n.href} class={path === n.href ? 'active' : ''}>
             <svg viewBox="0 0 24 24"><path d={n.icon} /></svg>{n.label}
           </a>
+        ))}
+        {navSoon.map((n) => (
+          <span class="nav-soon" title="Próximamente">
+            <svg viewBox="0 0 24 24"><path d={n.icon} /></svg>{n.label}
+          </span>
         ))}
       </nav>
       <div class="side-foot">

@@ -1,0 +1,79 @@
+---
+export const prerender = false;
+import Dashboard from '@/layouts/Dashboard.astro';
+import StatTile from '@/components/dashboard/StatTile.astro';
+import PipelineKanban from '@/components/dashboard/PipelineKanban.astro';
+import LeadsTable from '@/components/dashboard/LeadsTable.astro';
+import LeadDetailPanel from '@/components/dashboard/LeadDetailPanel.astro';
+
+const kpis = [
+  { label: 'Leads nuevos', value: '24' },
+  { label: 'En atención', value: '18' },
+  { label: 'Presupuesto enviado', value: '16' },
+  { label: 'Trabajo realizado', value: '12' },
+  { label: 'Facturado', value: '9' },
+];
+
+const columns = [
+  { label: 'Nuevo', count: 24 },
+  { label: 'En atención', count: 18 },
+  { label: 'Presupuesto enviado', count: 16 },
+  { label: 'Presupuesto aceptado', count: 14 },
+  { label: 'Trabajo realizado', count: 12 },
+  { label: 'Facturado', count: 9 },
+];
+
+const leads = [
+  { name: 'Laura Martín', phone: '612 345 678', source: '/desatascos-urgentes-madrid', cta: 'WhatsApp', status: 'En atención', statusTone: 'warning' as const, value: '180 €', date: '20/05 10:23' },
+  { name: 'Carlos Gómez', phone: '722 123 456', source: '/limpieza-de-tuberias', cta: 'Teléfono', status: 'Presupuesto enviado', statusTone: 'info' as const, value: '350 €', date: '20/05 09:15' },
+  { name: 'Ana López', phone: 'Formulario web', source: '/desatascos-urgentes', cta: 'Formulario', status: 'Trabajo realizado', statusTone: 'good' as const, value: '275 €', date: '19/05 16:40' },
+  { name: 'Miguel Pérez', phone: '608 987 654', source: '/vaciado-de-fosas', cta: 'WhatsApp', status: 'Facturado', statusTone: 'good' as const, value: '450 €', date: '19/05 14:22' },
+  { name: 'Sofía Ruiz', phone: 'Formulario web', source: '/inspeccion-con-camara', cta: 'Chatbot', status: 'Nuevo', statusTone: 'neutral' as const, value: '—', date: '19/05 11:05' },
+];
+
+const leadDetail = {
+  name: 'Laura Martín',
+  status: 'En atención',
+  fields: [
+    { label: 'Teléfono', value: '612 345 678' },
+    { label: 'Email', value: 'laura.martin@email.com' },
+    { label: 'Servicio', value: 'Desatascos urgentes' },
+    { label: 'Localidad', value: 'Madrid' },
+    { label: 'Fuente', value: 'Google orgánico' },
+    { label: 'Página', value: '/desatascos-urgentes-madrid' },
+    { label: 'CTA', value: 'WhatsApp' },
+    { label: 'Creado', value: '20/05/2024 10:23' },
+  ],
+  activity: [
+    { text: 'Lead creado', date: '20/05/2024 10:23' },
+    { text: 'WhatsApp clicado', date: '20/05/2024 10:23' },
+    { text: 'Conversación iniciada', date: '20/05/2024 10:25' },
+    { text: 'En atención', date: '20/05/2024 11:02' },
+  ],
+};
+---
+<Dashboard title="Seguimiento comercial">
+  <div class="grid">
+    <div class="card welcome">
+      <h2>De lead a facturación</h2>
+      <p>Sigue cada lead en su proceso comercial hasta la facturación — datos de ejemplo.</p>
+    </div>
+    <div class="kpis">
+      {kpis.map((k) => <StatTile label={k.label} value={k.value} />)}
+    </div>
+    <PipelineKanban columns={columns} />
+    <div class="cols-detail">
+      <LeadsTable title="Leads" rows={leads} />
+      <LeadDetailPanel name={leadDetail.name} status={leadDetail.status} fields={leadDetail.fields} activity={leadDetail.activity} />
+    </div>
+  </div>
+  <style>
+    .grid{display:flex;flex-direction:column;gap:20px;}
+    .card{background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:24px;}
+    .welcome h2{font-size:18px;margin-bottom:8px;}
+    .welcome p{color:#64748b;font-size:14px;line-height:1.6;}
+    .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+    .cols-detail{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;}
+    @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr);}.cols-detail{grid-template-columns:1fr;}}
+  </style>
+</Dashboard>

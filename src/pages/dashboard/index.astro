@@ -1,23 +1,66 @@
 ---
 export const prerender = false;
 import Dashboard from '@/layouts/Dashboard.astro';
+import TrendChart from '@/components/dashboard/TrendChart.astro';
+import RankingBars from '@/components/dashboard/RankingBars.astro';
+import ClicksBreakdown from '@/components/dashboard/ClicksBreakdown.astro';
+import SectionFunnel from '@/components/dashboard/SectionFunnel.astro';
 const user = Astro.locals.user!;
+
+// Datos de ejemplo — se sustituyen por analítica real en la fase de integración.
+const DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const visitValues = [46, 58, 41, 63, 77, 60, 92, 84, 68, 73, 96, 90, 103, 99];
+const today = new Date();
+const trendData = visitValues.map((value, i) => {
+  const d = new Date(today);
+  d.setDate(today.getDate() - (visitValues.length - 1 - i));
+  return { label: DOW[d.getDay()], value };
+});
+
+const topPages = [
+  { label: 'Inicio', value: 412 },
+  { label: 'Desatasco de tuberías', value: 268 },
+  { label: 'Barrio Ruzafa', value: 194 },
+  { label: 'Cámara de inspección', value: 151 },
+  { label: '¿Cuánto cuesta un desatasco?', value: 133 },
+  { label: 'Fosas sépticas', value: 97 },
+];
+
+const clicks = [
+  { label: 'Llamar', value: 128, color: 'var(--brand,#1e6fc8)' },
+  { label: 'WhatsApp', value: 94, color: 'var(--accent,#22b14c)' },
+  { label: 'Formulario', value: 47, color: '#eb6834' },
+];
+
+const sections = [
+  { label: 'Hero', pct: 100 },
+  { label: 'Servicios', pct: 78 },
+  { label: 'Precios', pct: 61 },
+  { label: 'FAQ', pct: 44 },
+  { label: 'Reviews', pct: 33 },
+  { label: 'Contacto', pct: 21 },
+];
+
+const weekTotal = visitValues.slice(-7).reduce((a, b) => a + b, 0);
 ---
 <Dashboard title="Métricas">
   <div class="grid">
     <div class="card welcome">
       <h2>Hola, {user.email}</h2>
-      <p>Tu panel está listo. Las métricas de tráfico (vistas por página, clics en llamar / WhatsApp / formulario, secciones más vistas) se activan en la siguiente fase.</p>
+      <p>Vista previa de cómo se verán las métricas de tráfico y conversión. Los números de abajo son de ejemplo — se conectan a la analítica real en la siguiente fase.</p>
     </div>
     <div class="kpis">
-      <div class="kpi"><span class="kpi-num" id="k-views">—</span><span class="kpi-lbl">Vistas (7 días)</span></div>
-      <div class="kpi"><span class="kpi-num" id="k-calls">—</span><span class="kpi-lbl">Clics en llamar</span></div>
-      <div class="kpi"><span class="kpi-num" id="k-wa">—</span><span class="kpi-lbl">Clics WhatsApp</span></div>
-      <div class="kpi"><span class="kpi-num" id="k-leads">—</span><span class="kpi-lbl">Leads</span></div>
+      <div class="kpi"><span class="kpi-num">{weekTotal}</span><span class="kpi-lbl">Vistas (7 días)</span></div>
+      <div class="kpi"><span class="kpi-num">{clicks[0].value}</span><span class="kpi-lbl">Clics en llamar</span></div>
+      <div class="kpi"><span class="kpi-num">{clicks[1].value}</span><span class="kpi-lbl">Clics WhatsApp</span></div>
+      <div class="kpi"><span class="kpi-num">{clicks[2].value}</span><span class="kpi-lbl">Leads (formulario)</span></div>
     </div>
-    <div class="card soon">
-      <strong>Próximamente (Fase 2):</strong> gráfica de vistas por URL, ranking de botones más pulsados, visibilidad de secciones y visitantes únicos.
+    <TrendChart title="Visitas · últimos 14 días" data={trendData} />
+    <div class="cols-2">
+      <RankingBars title="Páginas más vistas" rows={topPages} />
+      <ClicksBreakdown title="Clics por tipo" rows={clicks} />
     </div>
+    <SectionFunnel title="Visibilidad de secciones (home)" stages={sections} />
   </div>
   <style>
     .grid{display:flex;flex-direction:column;gap:20px;}
@@ -28,8 +71,7 @@ const user = Astro.locals.user!;
     .kpi{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;text-align:center;}
     .kpi-num{display:block;font-size:30px;font-weight:800;color:#1e6fc8;letter-spacing:-1px;}
     .kpi-lbl{font-size:12px;color:#64748b;margin-top:4px;display:block;}
-    .soon{background:#f8fafc;color:#64748b;font-size:13px;line-height:1.6;}
-    .soon strong{color:#0f172a;}
-    @media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr);}}
+    .cols-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    @media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr);}.cols-2{grid-template-columns:1fr;}}
   </style>
 </Dashboard>

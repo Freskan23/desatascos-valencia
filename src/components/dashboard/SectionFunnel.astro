@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  stages: { label: string; pct: number }[];
+}
+const { title, stages } = Astro.props;
+---
+<div class="chart-card">
+  <div class="chart-head">
+    <h3>{title}</h3>
+    <span class="chart-caption">datos de ejemplo</span>
+  </div>
+  <div class="funnel">
+    {stages.map((s) => (
+      <div class="row">
+        <span class="row-label">{s.label}</span>
+        <div class="bar-track">
+          <div class="bar-fill" style={`width:${s.pct}%`}></div>
+        </div>
+        <span class="row-value">{s.pct}%</span>
+      </div>
+    ))}
+  </div>
+</div>
+<style>
+  .chart-card{background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:22px;}
+  .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+  .chart-head h3{font-size:14px;font-weight:700;color:var(--ink,#0f172a);}
+  .chart-caption{font-size:11px;color:var(--ink-muted,#64748b);}
+  .funnel{display:flex;flex-direction:column;gap:11px;}
+  .row{display:grid;grid-template-columns:96px 1fr 38px;align-items:center;gap:10px;}
+  .row-label{font-size:12.5px;color:var(--ink,#0f172a);}
+  .bar-track{height:10px;background:#f1f5f9;border-radius:5px;overflow:hidden;}
+  .bar-fill{height:100%;background:var(--accent,#22b14c);border-radius:5px;min-width:4px;}
+  .row-value{font-size:12px;font-weight:700;color:var(--ink,#0f172a);text-align:right;font-variant-numeric:tabular-nums;}
+</style>

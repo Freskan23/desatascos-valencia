@@ -1,0 +1,66 @@
+---
+export const prerender = false;
+import Dashboard from '@/layouts/Dashboard.astro';
+import StatTile from '@/components/dashboard/StatTile.astro';
+import OrdinalFunnel from '@/components/dashboard/OrdinalFunnel.astro';
+import TrendChart from '@/components/dashboard/TrendChart.astro';
+import RankingBars from '@/components/dashboard/RankingBars.astro';
+
+const kpis = [
+  { label: 'Leads confirmados', value: '156', delta: { text: '18% vs periodo anterior', good: true } },
+  { label: 'Trabajos realizados', value: '68', delta: { text: '15% vs periodo anterior', good: true } },
+  { label: 'Facturación', value: '18.560 €', delta: { text: '22% vs periodo anterior', good: true } },
+  { label: 'Ticket medio', value: '273 €', delta: { text: '8% vs periodo anterior', good: true } },
+];
+
+const funnelStages = [
+  { label: 'Visitas', value: '1.248' },
+  { label: 'Intenciones de contacto', value: '312', sublabel: 'Clics en teléfono, WhatsApp, formulario' },
+  { label: 'Leads confirmados', value: '156', sublabel: 'Contactos efectivos' },
+  { label: 'Presupuestos enviados', value: '92' },
+  { label: 'Trabajos realizados', value: '68' },
+  { label: 'Facturación', value: '18.560 €' },
+];
+
+const DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const revenueValues = [980, 1120, 890, 1340, 1580, 1210, 1890, 1640, 1420, 1710, 2050, 1880, 2210, 1990];
+const today = new Date();
+const revenueData = revenueValues.map((value, i) => {
+  const d = new Date(today);
+  d.setDate(today.getDate() - (revenueValues.length - 1 - i));
+  return { label: DOW[d.getDay()], value };
+});
+
+const jobsByService = [
+  { label: 'Desatascos urgentes', value: 42 },
+  { label: 'Limpieza de tuberías', value: 25 },
+  { label: 'Vaciado de fosas', value: 18 },
+  { label: 'Inspección con cámara', value: 10 },
+  { label: 'Otros', value: 5 },
+];
+---
+<Dashboard title="Resumen del negocio">
+  <div class="grid">
+    <div class="card welcome">
+      <h2>Vista general del negocio</h2>
+      <p>Resumen ejecutivo con los datos clave — cifras de ejemplo, se conectan a datos reales en la fase de integración.</p>
+    </div>
+    <div class="kpis">
+      {kpis.map((k) => <StatTile label={k.label} value={k.value} delta={k.delta} />)}
+    </div>
+    <OrdinalFunnel title="Embudo comercial" stages={funnelStages} />
+    <div class="cols-2">
+      <TrendChart title="Evolución de la facturación · últimos 14 días" data={revenueData} unit="€" />
+      <RankingBars title="Trabajos por servicio" rows={jobsByService} unit="%" />
+    </div>
+  </div>
+  <style>
+    .grid{display:flex;flex-direction:column;gap:20px;}
+    .card{background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:24px;}
+    .welcome h2{font-size:18px;margin-bottom:8px;}
+    .welcome p{color:#64748b;font-size:14px;line-height:1.6;}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+    .cols-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    @media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr);}.cols-2{grid-template-columns:1fr;}}
+  </style>
+</Dashboard>

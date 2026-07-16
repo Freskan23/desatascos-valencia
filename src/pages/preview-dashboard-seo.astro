@@ -1,0 +1,96 @@
+---
+export const prerender = false;
+import Dashboard from '@/layouts/Dashboard.astro';
+import StatTile from '@/components/dashboard/StatTile.astro';
+import TrendChart from '@/components/dashboard/TrendChart.astro';
+import RankingBars from '@/components/dashboard/RankingBars.astro';
+import ClicksBreakdown from '@/components/dashboard/ClicksBreakdown.astro';
+
+const kpis = [
+  { label: 'Visitas totales', value: '1.248', delta: { text: '16% vs periodo anterior', good: true } },
+  { label: 'CTR orgánico', value: '6,8%', delta: { text: '0,9 p.p. vs periodo anterior', good: true } },
+  { label: 'Posición media', value: '18,7', delta: { text: '1,3 vs periodo anterior', good: false } },
+  { label: 'Leads confirmados', value: '156', delta: { text: '18% vs periodo anterior', good: true } },
+];
+
+const DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+function buildSeries(values: number[]) {
+  const today = new Date();
+  return values.map((value, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() - (values.length - 1 - i));
+    return { label: DOW[d.getDay()], value };
+  });
+}
+const organicVisits = buildSeries([420, 460, 390, 510, 580, 500, 640, 600, 560, 590, 690, 650, 720, 690]);
+const confirmedLeads = buildSeries([8, 10, 7, 11, 13, 9, 15, 14, 12, 13, 16, 15, 17, 16]);
+
+const trafficSources = [
+  { label: 'Orgánico', value: 62 },
+  { label: 'Directo', value: 18 },
+  { label: 'Referral', value: 9 },
+  { label: 'Social', value: 7 },
+  { label: 'Paid', value: 4 },
+];
+
+const ctaConversions = [
+  { label: 'WhatsApp', value: 128, color: 'var(--accent,#22b14c)' },
+  { label: 'Teléfono', value: 112, color: 'var(--brand,#1e6fc8)' },
+  { label: 'Formulario', value: 48, color: '#eb6834' },
+];
+
+const landingPages = [
+  { page: '/desatascos-urgentes', leads: 46, conv: '6,3%' },
+  { page: '/desatascos-urgentes-madrid', leads: 38, conv: '5,7%' },
+  { page: '/limpieza-de-tuberias', leads: 28, conv: '5,1%' },
+  { page: '/vaciado-de-fosas', leads: 22, conv: '4,8%' },
+  { page: '/inspeccion-con-camara', leads: 18, conv: '4,2%' },
+];
+---
+<Dashboard title="SEO — Rendimiento y adquisición">
+  <div class="grid">
+    <div class="card welcome">
+      <h2>Rendimiento web y calidad de los leads</h2>
+      <p>Cifras de ejemplo — se conectan a Search Console / GA4 en la fase de integración.</p>
+    </div>
+    <div class="kpis">
+      {kpis.map((k) => <StatTile label={k.label} value={k.value} delta={k.delta} />)}
+    </div>
+    <div class="cols-2">
+      <TrendChart title="Visitas orgánicas · últimos 14 días" data={organicVisits} />
+      <TrendChart title="Leads confirmados · últimos 14 días" data={confirmedLeads} unit="leads" />
+    </div>
+    <div class="cols-3">
+      <RankingBars title="Fuentes de tráfico" rows={trafficSources} unit="%" />
+      <ClicksBreakdown title="Conversiones por CTA (intenciones)" rows={ctaConversions} />
+      <div class="chart-card">
+        <div class="chart-head"><h3>Leads por página de destino</h3><span class="chart-caption">datos de ejemplo</span></div>
+        <table class="pages-table">
+          <thead><tr><th>Página</th><th>Leads</th><th>% Conv.</th></tr></thead>
+          <tbody>
+            {landingPages.map((p) => (
+              <tr><td>{p.page}</td><td>{p.leads}</td><td>{p.conv}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <style>
+    .grid{display:flex;flex-direction:column;gap:20px;}
+    .card{background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:24px;}
+    .welcome h2{font-size:18px;margin-bottom:8px;}
+    .welcome p{color:#64748b;font-size:14px;line-height:1.6;}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+    .cols-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    .cols-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
+    .chart-card{background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:22px;}
+    .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+    .chart-head h3{font-size:14px;font-weight:700;color:var(--ink,#0f172a);}
+    .chart-caption{font-size:11px;color:var(--ink-muted,#64748b);}
+    .pages-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+    .pages-table th{text-align:left;font-size:10.5px;text-transform:uppercase;color:var(--ink-muted,#64748b);padding:0 6px 8px;border-bottom:1px solid var(--border,#e2e8f0);}
+    .pages-table td{padding:8px 6px;border-bottom:1px solid #f1f5f9;color:var(--ink,#0f172a);}
+    @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr);}.cols-2,.cols-3{grid-template-columns:1fr;}}
+  </style>
+</Dashboard>

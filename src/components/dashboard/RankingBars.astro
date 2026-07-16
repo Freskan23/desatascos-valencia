@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string;
+  rows: { label: string; value: number }[];
+  unit?: string;
+}
+const { title, rows, unit = '' } = Astro.props;
+const max = Math.max(...rows.map((r) => r.value));
+---
+<div class="chart-card">
+  <div class="chart-head">
+    <h3>{title}</h3>
+    <span class="chart-caption">datos de ejemplo</span>
+  </div>
+  <div class="ranking">
+    {rows.map((r) => (
+      <div class="row">
+        <span class="row-label" title={r.label}>{r.label}</span>
+        <div class="bar-track">
+          <div class="bar-fill" style={`width:${(r.value / max) * 100}%`}></div>
+        </div>
+        <span class="row-value">{r.value}{unit}</span>
+      </div>
+    ))}
+  </div>
+</div>
+<style>
+  .chart-card{background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:22px;}
+  .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+  .chart-head h3{font-size:14px;font-weight:700;color:var(--ink,#0f172a);}
+  .chart-caption{font-size:11px;color:var(--ink-muted,#64748b);}
+  .ranking{display:flex;flex-direction:column;gap:11px;}
+  .row{display:grid;grid-template-columns:150px 1fr 44px;align-items:center;gap:10px;}
+  .row-label{font-size:12.5px;color:var(--ink,#0f172a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .bar-track{height:10px;background:#f1f5f9;border-radius:5px;overflow:hidden;}
+  .bar-fill{height:100%;background:var(--brand,#1e6fc8);border-radius:5px;min-width:4px;}
+  .row-value{font-size:12px;font-weight:700;color:var(--ink,#0f172a);text-align:right;font-variant-numeric:tabular-nums;}
+  @media(max-width:520px){.row{grid-template-columns:96px 1fr 40px;}}
+</style>

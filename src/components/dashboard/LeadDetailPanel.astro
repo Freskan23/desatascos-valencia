@@ -1,0 +1,56 @@
+---
+interface ActivityItem { text: string; date: string; }
+interface Props {
+  name: string;
+  status: string;
+  fields: { label: string; value: string }[];
+  activity: ActivityItem[];
+}
+const { name, status, fields, activity } = Astro.props;
+---
+<div class="panel">
+  <div class="panel-head">
+    <div>
+      <h3>{name}</h3>
+      <span class="pill">{status}</span>
+    </div>
+  </div>
+  <dl class="fields">
+    {fields.map((f) => (
+      <div class="field-row">
+        <dt>{f.label}</dt>
+        <dd>{f.value}</dd>
+      </div>
+    ))}
+  </dl>
+  <div class="activity">
+    <h4>Actividad</h4>
+    <ul>
+      {activity.map((a) => (
+        <li>
+          <span class="dot"></span>
+          <div>
+            <p>{a.text}</p>
+            <span class="muted">{a.date}</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+<style>
+  .panel{background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:22px;max-width:340px;}
+  .panel-head h3{font-size:16px;font-weight:800;color:var(--ink,#0f172a);}
+  .pill{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;color:#b45309;background:#fef3c7;}
+  .fields{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
+  .field-row{display:flex;justify-content:space-between;font-size:12.5px;border-bottom:1px solid #f1f5f9;padding-bottom:8px;}
+  dt{color:var(--ink-muted,#64748b);}
+  dd{color:var(--ink,#0f172a);font-weight:600;text-align:right;}
+  .activity{margin-top:20px;}
+  .activity h4{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted,#64748b);margin-bottom:12px;}
+  .activity ul{display:flex;flex-direction:column;gap:14px;}
+  .activity li{display:flex;gap:10px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--brand,#1e6fc8);margin-top:5px;flex-shrink:0;}
+  .activity p{font-size:12.5px;color:var(--ink,#0f172a);}
+  .muted{font-size:11px;color:var(--ink-muted,#64748b);}
+</style>

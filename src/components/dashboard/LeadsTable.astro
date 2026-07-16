@@ -1,0 +1,57 @@
+---
+interface Lead {
+  name: string;
+  phone: string;
+  source: string;
+  cta: string;
+  status: string;
+  statusTone: 'good' | 'warning' | 'info' | 'neutral';
+  value: string;
+  date: string;
+}
+interface Props {
+  title: string;
+  rows: Lead[];
+}
+const { title, rows } = Astro.props;
+const tones: Record<Lead['statusTone'], string> = {
+  good: 'color:#0ca30c;background:rgba(12,163,12,.1);',
+  warning: 'color:#b45309;background:#fef3c7;',
+  info: 'color:#1e6fc8;background:rgba(30,111,200,.1);',
+  neutral: 'color:#64748b;background:#f1f5f9;',
+};
+---
+<div class="chart-card">
+  <div class="chart-head">
+    <h3>{title}</h3>
+    <span class="chart-caption">datos de ejemplo</span>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Lead</th><th>Fuente</th><th>CTA</th><th>Estado</th><th>Valor</th><th>Fecha</th></tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <td><strong>{r.name}</strong><br /><span class="muted">{r.phone}</span></td>
+          <td>{r.source}</td>
+          <td>{r.cta}</td>
+          <td><span class="pill" style={tones[r.statusTone]}>{r.status}</span></td>
+          <td>{r.value}</td>
+          <td class="muted">{r.date}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<style>
+  .chart-card{background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:22px;overflow-x:auto;}
+  .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+  .chart-head h3{font-size:14px;font-weight:700;color:var(--ink,#0f172a);}
+  .chart-caption{font-size:11px;color:var(--ink-muted,#64748b);}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted,#64748b);padding:0 10px 10px;border-bottom:1px solid var(--border,#e2e8f0);}
+  td{padding:10px;border-bottom:1px solid #f1f5f9;color:var(--ink,#0f172a);}
+  .muted{color:var(--ink-muted,#64748b);font-size:12px;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;}
+</style>

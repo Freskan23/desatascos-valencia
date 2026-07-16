@@ -1,0 +1,34 @@
+---
+interface Props {
+  title: string;
+  stages: { label: string; value: string; sublabel?: string }[];
+}
+const { title, stages } = Astro.props;
+const ramp = ['#9ec5f4', '#5598e7', '#2a78d6', '#1c5cab', '#184f95', '#0d366b'];
+---
+<div class="chart-card">
+  <div class="chart-head">
+    <h3>{title}</h3>
+    <span class="chart-caption">datos de ejemplo</span>
+  </div>
+  <div class="funnel">
+    {stages.map((s, i) => (
+      <div class="stage" style={`background:${ramp[Math.min(i, ramp.length - 1)]}`}>
+        <span class="stage-value">{s.value}</span>
+        <span class="stage-label">{s.label}</span>
+        {s.sublabel && <span class="stage-sub">{s.sublabel}</span>}
+      </div>
+    ))}
+  </div>
+</div>
+<style>
+  .chart-card{background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:22px;}
+  .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+  .chart-head h3{font-size:14px;font-weight:700;color:var(--ink,#0f172a);}
+  .chart-caption{font-size:11px;color:var(--ink-muted,#64748b);}
+  .funnel{display:flex;flex-direction:column;gap:2px;}
+  .stage{color:#fff;padding:10px 16px;border-radius:8px;display:flex;align-items:baseline;gap:10px;}
+  .stage-value{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;}
+  .stage-label{font-size:12.5px;font-weight:600;}
+  .stage-sub{font-size:11px;opacity:.8;margin-left:auto;}
+</style>

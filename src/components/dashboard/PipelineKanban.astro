@@ -1,0 +1,25 @@
+---
+interface Props {
+  columns: { label: string; count: number; accent?: string }[];
+}
+const { columns } = Astro.props;
+---
+<div class="kanban">
+  {columns.map((c) => (
+    <div class="col">
+      <div class="col-head">
+        <span class="col-label">{c.label}</span>
+        <span class="col-count" style={c.accent ? `background:${c.accent}` : ''}>{c.count}</span>
+      </div>
+    </div>
+  ))}
+</div>
+<style>
+  .kanban{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .col{background:var(--surface-alt,#f8fafc);border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:16px;}
+  .col-head{display:flex;flex-direction:column;gap:6px;}
+  .col-label{font-size:12px;color:var(--ink-muted,#64748b);font-weight:600;}
+  .col-count{font-size:24px;font-weight:800;color:var(--ink,#0f172a);}
+  @media(max-width:900px){.kanban{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:520px){.kanban{grid-template-columns:repeat(2,1fr);}}
+</style>

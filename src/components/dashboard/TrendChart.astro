@@ -1,0 +1,106 @@
+---
+interface Props {
+  title: string;
+  data: { label: string; value: number }[];
+  unit?: string;
+}
+const { title, data, unit = 'visitas' } = Astro.props;
+
+const W = 640, H = 200;
+const padL = 34, padR = 8, padT = 14, padB = 26;
+const innerW = W - padL - padR;
+const innerH = H - padT - padB;
+
+const rawMax = Math.max(...data.map((d) => d.value));
+const niceMax = Math.ceil(rawMax / 20) * 20 || 20;
+
+const stepX = data.length > 1 ? innerW / (data.length - 1) : 0;
+const points = data.map((d, i) => ({
+  x: padL + i * stepX,
+  y: padT + innerH * (1 - d.value / niceMax),
+  ...d,
+}));
+
+const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+const areaPath = `${linePath} L${points[points.length - 1].x.toFixed(1)},${padT + innerH} L${points[0].x.toFixed(1)},${padT + innerH} Z`;
+
+const gridSteps = [0, 0.5, 1];
+const last = points[points.length - 1];
+const colWidth = data.length > 1 ? innerW / (data.length - 1) : innerW;
+---
+<div class="chart-card">
+  <div class="chart-head">
+    <h3>{title}</h3>
+    <span class="chart-caption">datos de ejemplo</span>
+  </div>
+  <div class="chart-wrap" data-trend>
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label={title}>
+      {gridSteps.map((s) => {
+        const y = padT + innerH * (1 - s);
+        return (
+          <g>
+            <line x1={padL} y1={y} x2={W - padR} y2={y} class="grid" />
+            <text x={padL - 8} y={y} class="axis-y">{Math.round(niceMax * s)}</text>
+          </g>
+        );
+      })}
+      <path d={areaPath} class="area" />
+      <path d={linePath} class="line" />
+      <circle cx={last.x} cy={last.y} r="4" class="end-dot" />
+      <text x={last.x} y={last.y - 12} class="end-label" text-anchor="end">{last.value}</text>
+      {points.map((p, i) => (
+        <rect x={padL + i * colWidth - colWidth / 2} y={padT} width={colWidth} height={innerH} class="hit" data-x={p.x} data-label={p.label} data-value={p.value} data-unit={unit} />
+      ))}
+      <line class="crosshair" y1={padT} y2={padT + innerH} />
+    </svg>
+    <div class="tooltip" role="tooltip"></div>
+  </div>
+</div>
+<style>
+  .chart-card{background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:22px 22px 18px;}
+  .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;}
+  .chart-head h3{font-size:14px;font-weight:700;color:var(--ink,#0f172a);}
+  .chart-caption{font-size:11px;color:var(--ink-muted,#64748b);}
+  .chart-wrap{position:relative;}
+  svg{width:100%;height:auto;display:block;overflow:visible;}
+  .grid{stroke:#eef2f7;stroke-width:1;}
+  .axis-y{font-size:9px;fill:#94a3b8;text-anchor:end;dominant-baseline:middle;}
+  .area{fill:var(--brand,#1e6fc8);fill-opacity:.08;}
+  .line{fill:none;stroke:var(--brand,#1e6fc8);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .end-dot{fill:var(--brand,#1e6fc8);stroke:#fff;stroke-width:2;}
+  .end-label{font-size:11px;font-weight:700;fill:var(--ink,#0f172a);}
+  .hit{fill:transparent;cursor:crosshair;}
+  .crosshair{stroke:#cbd5e1;stroke-width:1;opacity:0;pointer-events:none;}
+  .tooltip{position:absolute;top:0;pointer-events:none;background:#0f172a;color:#fff;font-size:11px;font-weight:600;padding:5px 9px;border-radius:7px;white-space:nowrap;opacity:0;transform:translate(-50%,-100%);transition:opacity .1s;}
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-trend]').forEach((wrap) => {
+    const svg = wrap.querySelector('svg')!;
+    const tooltip = wrap.querySelector<HTMLElement>('.tooltip')!;
+    const crosshair = svg.querySelector<SVGLineElement>('.crosshair')!;
+    const hits = Array.from(svg.querySelectorAll<SVGRectElement>('.hit'));
+    const vb = svg.viewBox.baseVal;
+
+    function show(hit: SVGRectElement) {
+      const x = parseFloat(hit.dataset.x!);
+      const label = hit.dataset.label;
+      const value = hit.dataset.value;
+      crosshair.setAttribute('x1', String(x));
+      crosshair.setAttribute('x2', String(x));
+      crosshair.style.opacity = '1';
+      const pct = (x / vb.width) * 100;
+      tooltip.style.left = pct + '%';
+      tooltip.style.opacity = '1';
+      tooltip.textContent = `${label} · ${value} ${hit.dataset.unit}`;
+    }
+    function hide() {
+      crosshair.style.opacity = '0';
+      tooltip.style.opacity = '0';
+    }
+    hits.forEach((hit) => {
+      hit.addEventListener('mouseenter', () => show(hit));
+      hit.addEventListener('focus', () => show(hit));
+    });
+    wrap.addEventListener('mouseleave', hide);
+  });
+</script>
