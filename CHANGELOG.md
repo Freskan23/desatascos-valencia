@@ -5,6 +5,19 @@ Fecha en formato `YYYY-MM-DD`.
 
 ---
 
+## [Sin publicar] — 2026-08-12
+
+### Añadido
+- **`/dashboard/settings`** (admin-only): pantalla para configurar las 4 API keys que usa la web (OpenAI, Resend, Telegram Bot Token, Telegram Chat ID) — con enlace directo a dónde conseguir cada una, para uso en clase.
+- Modelo `Setting` (BD) + `src/lib/secrets.ts` (`getSecret`/`setSecret`): las keys guardadas desde el panel se leen con fallback a `process.env`.
+- Ruta admin `POST /api/admin/settings` para guardar cada key.
+
+### Cambiado
+- `notify.ts` (`sendTelegram`, `sendChatLeadEmail`, `openai`) ya no lee `process.env` directamente — reciben la key como parámetro, resuelta por el caller vía `getSecret`.
+
+### Por qué
+- Como `Setting` vive en la misma Neon DB que usa Vercel, una key guardada en el panel se aplica igual en local y en producción sin redeploy ni tocar `.env` en dos sitios — pensado para que la clase configure APIs en vivo y se vea reflejado al momento.
+
 ## [0.3.1] — 2026-05-27
 
 ### Corregido

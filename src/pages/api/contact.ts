@@ -1,14 +1,17 @@
 import type { APIRoute } from 'astro';
 import { CORS, json, escapeMd, sendTelegram, sendContactEmail } from '@/lib/notify';
+import { getSecret } from '@/lib/secrets';
 
 export const prerender = false;
 
 export const OPTIONS: APIRoute = () => new Response(null, { status: 200, headers: CORS });
 
 export const POST: APIRoute = async ({ request }) => {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-  const resendKey = process.env.RESEND_API_KEY;
+  const [token, chatId, resendKey] = await Promise.all([
+    getSecret('TELEGRAM_BOT_TOKEN'),
+    getSecret('TELEGRAM_CHAT_ID'),
+    getSecret('RESEND_API_KEY'),
+  ]);
 
   if (!token || !chatId) return json({ error: 'Telegram no configurado en el servidor' }, 500);
 
@@ -35,7 +38,7 @@ export const POST: APIRoute = async ({ request }) => {
   ].filter(Boolean).join('\n');
 
   try {
-    const tg = await sendTelegram(tgText);
+    const tg = await sendTelegram(tgText, { token, chatId });
     if (!tg.ok) return json({ error: 'Telegram rechazó el mensaje', detail: tg.detail }, 502);
   } catch (err) {
     return json({ error: 'Error contactando con Telegram', detail: String(err) }, 500);

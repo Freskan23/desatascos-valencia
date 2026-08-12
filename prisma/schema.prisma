@@ -106,6 +106,15 @@ model Lead {
   @@index([channel])
 }
 
+// ─────────── App: Configuración (API keys editables desde /dashboard/settings) ───────────
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("setting")
+}
+
 // ─────────── App: Analítica ───────────
 model Event {
   id          String   @id @default(cuid())

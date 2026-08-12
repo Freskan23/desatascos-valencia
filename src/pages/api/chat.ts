@@ -3,13 +3,20 @@ import {
   CORS, json, SYSTEM_PROMPT, SYNTH_PROMPT, openai,
   sendTelegram, sendChatLeadEmail, type ChatLead, type ChatPhoto,
 } from '@/lib/notify';
+import { getSecret } from '@/lib/secrets';
 
 export const prerender = false;
 
 export const OPTIONS: APIRoute = () => new Response(null, { status: 200, headers: CORS });
 
 export const POST: APIRoute = async ({ request }) => {
-  if (!process.env.OPENAI_API_KEY) return json({ error: 'OpenAI no configurado' }, 500);
+  const [openaiKey, tgToken, tgChatId, resendKey] = await Promise.all([
+    getSecret('OPENAI_API_KEY'),
+    getSecret('TELEGRAM_BOT_TOKEN'),
+    getSecret('TELEGRAM_CHAT_ID'),
+    getSecret('RESEND_API_KEY'),
+  ]);
+  if (!openaiKey) return json({ error: 'OpenAI no configurado' }, 500);
 
   const body = (await request.json().catch(() => ({}))) as {
     messages?: Array<{ role: string; content: string }>;
@@ -27,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   let reply: string;
   try {
-    reply = await openai(convo);
+    reply = await openai(convo, { apiKey: openaiKey });
   } catch (err) {
     return json({ error: 'Error del asistente', detail: String(err).slice(0, 200) }, 502);
   }
@@ -42,7 +49,7 @@ export const POST: APIRoute = async ({ request }) => {
         .join('\n');
       const synthRaw = await openai(
         [{ role: 'system', content: SYNTH_PROMPT }, { role: 'user', content: transcript }],
-        { json: true, max: 300 },
+        { json: true, max: 300, apiKey: openaiKey },
       );
       let lead: ChatLead = {};
       try { lead = JSON.parse(synthRaw); } catch { lead = { resumen: transcript.slice(0, 400) }; }
@@ -59,7 +66,10 @@ export const POST: APIRoute = async ({ request }) => {
         '', `🕐 ${new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' })}`,
       ].filter(Boolean).join('\n');
 
-      await Promise.all([sendTelegram(tg), sendChatLeadEmail({ lead, photo })]);
+      await Promise.all([
+        sendTelegram(tg, { token: tgToken, chatId: tgChatId }),
+        sendChatLeadEmail({ lead, photo, resendKey }),
+      ]);
 
       // TODO Fase 3: persistir el lead en la BD (prisma.lead.create) — best-effort.
     } catch (err) {

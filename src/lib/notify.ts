@@ -52,9 +52,10 @@ export function esc(s: unknown): string {
   )[c]);
 }
 
-export async function sendTelegram(text: string): Promise<{ ok: boolean; detail?: unknown }> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+export async function sendTelegram(
+  text: string,
+  { token, chatId }: { token?: string; chatId?: string } = {},
+): Promise<{ ok: boolean; detail?: unknown }> {
   if (!token || !chatId) return { ok: false, detail: 'telegram-not-configured' };
   const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: 'POST',
@@ -119,8 +120,10 @@ export interface ChatLead {
 export interface ChatPhoto { name?: string; b64?: string }
 
 // Email del lead del chatbot al comercial (con foto adjunta)
-export async function sendChatLeadEmail({ lead, photo }: { lead: ChatLead; photo: ChatPhoto | null }): Promise<void> {
-  const key = process.env.RESEND_API_KEY;
+export async function sendChatLeadEmail(
+  { lead, photo, resendKey }: { lead: ChatLead; photo: ChatPhoto | null; resendKey?: string },
+): Promise<void> {
+  const key = resendKey;
   if (!key) return;
   const rows = [
     ['Nombre', lead.nombre], ['Teléfono', lead.telefono], ['Zona', lead.zona],
@@ -157,9 +160,9 @@ export async function sendChatLeadEmail({ lead, photo }: { lead: ChatLead; photo
 
 export async function openai(
   messages: Array<{ role: string; content: string }>,
-  { json: jsonMode = false, model = 'gpt-4o-mini', max = 400 }: { json?: boolean; model?: string; max?: number } = {},
+  { json: jsonMode = false, model = 'gpt-4o-mini', max = 400, apiKey }: { json?: boolean; model?: string; max?: number; apiKey?: string } = {},
 ): Promise<string> {
-  const key = process.env.OPENAI_API_KEY;
+  const key = apiKey;
   const body: Record<string, unknown> = { model, messages, temperature: 0.5, max_tokens: max };
   if (jsonMode) body.response_format = { type: 'json_object' };
   const r = await fetch('https://api.openai.com/v1/chat/completions', {
