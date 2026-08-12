@@ -5,6 +5,16 @@ Fecha en formato `YYYY-MM-DD`.
 
 ---
 
+## [Sin publicar] — 2026-08-12 (2)
+
+### Añadido
+- Sección **"Analítica y SEO"** en `/dashboard/settings`: slots para `GOOGLE_SERVICE_ACCOUNT_JSON` (compartido), `GA4_PROPERTY_ID` y `GSC_SITE_URL`.
+- `src/lib/google-auth.ts`, `src/lib/ga4.ts`, `src/lib/gsc.ts`: fetchers listos para consumir GA4 Data API y Search Console API en cuanto se pegue la credencial — de momento no están cableados a las 3 pantallas `preview-dashboard-*` (siguen con datos de ejemplo).
+- Dependencia `google-auth-library`.
+
+### Por qué
+- El dueño/comercial/SEO dashboards muestran cifras de ejemplo que en producción vienen de GA4 (tráfico) y Search Console (posición media, CTR orgánico) — no hay forma de sacar esos dos datos sin esas APIs. El resto de métricas (leads, funnel, facturación) son datos internos (BD) o de gestión manual, no requieren API externa.
+
 ## [Sin publicar] — 2026-08-12
 
 ### Añadido

@@ -4,41 +4,51 @@ import Dashboard from '@/layouts/Dashboard.astro';
 import { getSecretsStatus } from '@/lib/secrets';
 
 const keys = await getSecretsStatus();
+const groups = [...new Set(keys.map((k) => k.group))];
 ---
 <Dashboard title="Configuración">
   <div class="card intro">
     <h2>APIs de la web</h2>
-    <p>Aquí se configuran las claves que usa la web (chatbot, email, avisos de Telegram). Se guardan en la base de datos y se aplican al momento, tanto en local como en producción — no hace falta redeploy.</p>
+    <p>Aquí se configuran las claves que usa la web. Se guardan en la base de datos y se aplican al momento, tanto en local como en producción — no hace falta redeploy.</p>
   </div>
 
-  <div class="grid">
-    {keys.map((k) => (
-      <div class="card key-row" data-key={k.key}>
-        <div class="key-head">
-          <div>
-            <h3>{k.label}</h3>
-            <p class="help">{k.help}</p>
+  {groups.map((group) => (
+    <section class="section">
+      <h2 class="section-title">{group}</h2>
+      <div class="grid">
+        {keys.filter((k) => k.group === group).map((k) => (
+          <div class="card key-row" data-key={k.key}>
+            <div class="key-head">
+              <div>
+                <h3>{k.label}</h3>
+                <p class="help">{k.help}</p>
+              </div>
+              <span class={'badge ' + (k.configured ? 'ok' : 'missing')}>
+                {k.configured ? '✓ Configurada' : 'Falta'}
+              </span>
+            </div>
+            {k.configured && <p class="current">Actual: <code>{k.masked}</code> <span class="src">({k.source === 'db' ? 'guardada aquí' : 'variable de entorno'})</span></p>}
+            <div class="row">
+              {k.multiline
+                ? <textarea class="key-input key-textarea" placeholder={k.placeholder} autocomplete="off" rows="4"></textarea>
+                : <input type="password" class="key-input" placeholder={k.placeholder} autocomplete="off" />}
+              <button class="save-btn" type="button">Guardar</button>
+            </div>
+            <a class="get-link" href={k.getUrl} target="_blank" rel="noopener">¿Dónde consigo esto? ↗</a>
+            <p class="status" aria-live="polite"></p>
           </div>
-          <span class={'badge ' + (k.configured ? 'ok' : 'missing')}>
-            {k.configured ? '✓ Configurada' : 'Falta'}
-          </span>
-        </div>
-        {k.configured && <p class="current">Actual: <code>{k.masked}</code> <span class="src">({k.source === 'db' ? 'guardada aquí' : 'variable de entorno'})</span></p>}
-        <div class="row">
-          <input type="password" class="key-input" placeholder={k.placeholder} autocomplete="off" />
-          <button class="save-btn" type="button">Guardar</button>
-        </div>
-        <a class="get-link" href={k.getUrl} target="_blank" rel="noopener">¿Dónde consigo esta clave? ↗</a>
-        <p class="status" aria-live="polite"></p>
+        ))}
       </div>
-    ))}
-  </div>
+    </section>
+  ))}
 
   <style>
     .card{background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:24px;}
-    .intro{margin-bottom:20px;}
+    .intro{margin-bottom:24px;}
     .intro h2{font-size:18px;margin-bottom:8px;}
     .intro p{color:#64748b;font-size:14px;line-height:1.6;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#64748b;margin-bottom:12px;}
     .grid{display:flex;flex-direction:column;gap:16px;}
     .key-row{display:flex;flex-direction:column;gap:10px;}
     .key-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
@@ -50,9 +60,10 @@ const keys = await getSecretsStatus();
     .current{font-size:12px;color:#64748b;}
     .current code{background:#f1f5f9;padding:2px 6px;border-radius:6px;font-size:12px;}
     .src{color:#94a3b8;}
-    .row{display:flex;gap:10px;}
+    .row{display:flex;gap:10px;align-items:flex-start;}
     .key-input{flex:1;padding:10px 12px;border:1px solid var(--border,#e2e8f0);border-radius:10px;font-size:13px;font-family:ui-monospace,monospace;}
-    .save-btn{padding:10px 18px;border:none;border-radius:10px;background:var(--brand,#1e6fc8);color:#fff;font-weight:700;font-size:13px;cursor:pointer;}
+    .key-textarea{resize:vertical;}
+    .save-btn{padding:10px 18px;border:none;border-radius:10px;background:var(--brand,#1e6fc8);color:#fff;font-weight:700;font-size:13px;cursor:pointer;flex-shrink:0;}
     .save-btn:hover{opacity:.9;}
     .save-btn:disabled{opacity:.5;cursor:not-allowed;}
     .get-link{font-size:12px;color:var(--brand,#1e6fc8);text-decoration:none;width:fit-content;}
@@ -65,13 +76,13 @@ const keys = await getSecretsStatus();
   <script>
     document.querySelectorAll<HTMLElement>('.key-row').forEach((row) => {
       const key = row.dataset.key!;
-      const input = row.querySelector<HTMLInputElement>('.key-input')!;
+      const input = row.querySelector<HTMLInputElement | HTMLTextAreaElement>('.key-input')!;
       const btn = row.querySelector<HTMLButtonElement>('.save-btn')!;
       const status = row.querySelector<HTMLElement>('.status')!;
 
       btn.addEventListener('click', async () => {
         const value = input.value.trim();
-        if (!value) { status.textContent = 'Pega una clave antes de guardar.'; status.className = 'status err'; return; }
+        if (!value) { status.textContent = 'Pega un valor antes de guardar.'; status.className = 'status err'; return; }
         btn.disabled = true;
         status.textContent = 'Guardando...'; status.className = 'status';
         try {
@@ -82,7 +93,7 @@ const keys = await getSecretsStatus();
           });
           const data = await r.json();
           if (!r.ok) throw new Error(data.error || 'Error');
-          status.textContent = 'Guardada ✓ — recarga para ver el estado actualizado.';
+          status.textContent = 'Guardado ✓ — recarga para ver el estado actualizado.';
           status.className = 'status ok';
           input.value = '';
         } catch (err) {
