@@ -16,7 +16,8 @@ export const auth = betterAuth({
   trustedOrigins: [
     baseURL,
     'https://desatascos-valencia.vercel.app',
-    'https://desatascosvalencia24h.com',
+    'https://desatascoslajenuco.com',
+    'https://www.desatascoslajenuco.com',
   ],
   user: {
     additionalFields: {
