@@ -5,6 +5,15 @@ Fecha en formato `YYYY-MM-DD`.
 
 ---
 
+## [Sin publicar] — 2026-08-12 (3)
+
+### Cambiado
+- `preview-dashboard-seo.astro` deja de mostrar cifras de ejemplo: visitas, fuentes de tráfico y "páginas mejor posicionadas" vienen ahora de GA4/Search Console en vivo. Las secciones sin fuente real (leads confirmados, CTA) muestran un aviso "pendiente" en vez de números inventados.
+- `TrendChart`/`RankingBars` ganan prop `caption` (antes decían "datos de ejemplo" siempre, aunque el dato fuera real).
+
+### Por qué
+- El usuario pidió expresamente quitar los datos falsos una vez el acceso a GA4/GSC quedó verificado. Mostrar "pendiente" en vez de un número inventado es más honesto que dejar cifras de mentira con etiqueta de "ejemplo" que nadie lee.
+
 ## [Sin publicar] — 2026-08-12 (2)
 
 ### Añadido

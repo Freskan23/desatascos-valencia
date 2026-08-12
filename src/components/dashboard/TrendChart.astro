@@ -3,8 +3,9 @@ interface Props {
   title: string;
   data: { label: string; value: number }[];
   unit?: string;
+  caption?: string;
 }
-const { title, data, unit = 'visitas' } = Astro.props;
+const { title, data, unit = 'visitas', caption = 'datos de ejemplo' } = Astro.props;
 
 const W = 640, H = 200;
 const padL = 34, padR = 8, padT = 14, padB = 26;
@@ -31,7 +32,7 @@ const colWidth = data.length > 1 ? innerW / (data.length - 1) : innerW;
 <div class="chart-card">
   <div class="chart-head">
     <h3>{title}</h3>
-    <span class="chart-caption">datos de ejemplo</span>
+    <span class="chart-caption">{caption}</span>
   </div>
   <div class="chart-wrap" data-trend>
     <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label={title}>
